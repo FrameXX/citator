@@ -1,0 +1,2673 @@
+<!DOCTYPE html>
+<html lang="en">
+    
+    
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no, viewport-fit=cover">
+<title>Citátor - jednoduché citace webových stránek</title>
+<meta lang="cs">
+
+<meta name="theme-color" content="#ed9531"/>
+<meta property="og:title" content="Citátor"/>
+<meta property="og:description" content="Jednoduchý generátor citací webových stránek">
+<meta property="twitter:title" content="Citátor"/>
+<meta property="twitter:description" content="Jednoduchý generátor citací webových stránek">
+<meta property="og:image:width" content="1200"/>
+<meta property="og:image:height" content="630"/>
+<meta property="og:image:type" content="image/png"/>
+<meta property="og:image" content="/img/citator_og_banner.png"/>
+<meta property="twitter:image" content="/img/citator_og_banner.png"/>
+<meta property="og:image:width" content="960"/>
+<meta property="og:image:height" content="960"/>
+<meta property="og:image:type" content="image/png"/>
+<meta property="og:image" content="/img/citator_og_banner_square.png"/>
+<meta property="twitter:image" content="/img/citator_og_banner_square.png"/>
+
+<link rel="icon" type="image/svg+xml" href="favicon.svg"/>
+<link rel="icon" type="image/png" sizes="256x256" href="favicon.png"/>
+<link rel="apple-touch-icon" type="image/png" sizes="256x256" href="favicon.png"/>
+<link rel="shortcut icon" type="image/ico" sizes="128x128" href="favicon.ico"/>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Roboto&family=Roboto+Mono&display=swap" rel="stylesheet"/>
+</head>
+
+
+<style type="text/css">
+
+@keyframes knockerLeft {
+
+    0% {
+        transform: translateY(0);
+    }
+
+    10% {
+        transform: translateY(-20px);
+    }
+
+    30% {
+        transform: translateY(0);
+    }
+
+}
+
+@keyframes knockerRight {
+
+    0% {
+        transform: translateY(0);
+    }
+
+    20% {
+        transform: translateY(-20px);
+    }
+
+    40% {
+        transform: translateY(0);
+    }
+
+}
+
+:root {
+
+    --buttonAccent: rgb(237, 149, 49);
+    --buttonBackAccent: rgb(34, 26, 15);
+    --errorAccent: rgb(245, 80, 100);
+    --errorBackAccent: rgb(25, 0, 0);
+    --textAccent: rgb(120, 180, 65);
+    --textBackAccent: rgb(0, 25, 0);
+    --inputAccent: rgb(60, 140, 255);
+    --inputBackAccent: rgb(0, 0, 25);
+    --linkAccent: rgb(145, 95, 255);
+    --backgroundAccent: black;
+    --scrollbarThumbColor: rgb(34, 26, 15);
+    --scrollbarWidth: 11px;
+
+}
+
+::-webkit-scrollbar {
+    width: var(--scrollbarWidth);
+}
+ 
+::-webkit-scrollbar-thumb {
+    background-color: var(--scrollbarThumbColor);
+    border: 3px solid var(--buttonAccent);
+    border-radius: 9px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background-color: var(--buttonAccent); 
+}
+
+::-webkit-scrollbar-thumb:active {
+    background-color: var(--buttonAccent); 
+}
+
+body {
+    font-family: 'Roboto Mono', 'Roboto', Arial;
+    background-color: var(--backgroundAccent);
+    text-align: center;
+    overflow-y: hidden;
+    height: fit-content;
+    color: var(--textAccent);
+}
+
+/* iframe {
+    display: none !important;
+} */
+
+button, input {
+    font-family: inherit;
+    letter-spacing: inherit;
+    color: inherit;
+}
+
+a {
+    color: var(--linkAccent);
+}
+
+h1 {
+    font-size: 32px;
+    padding-bottom: 10px;
+}
+
+h2 {
+    font-size: 25px;
+}
+
+button {
+    background-color: var(--buttonBackAccent);
+    color: var(--buttonAccent);
+    border: 3px solid var(--buttonAccent);
+    cursor: pointer;
+    display: flex;
+    flex-direction: row-reverse;
+    justify-content: center;
+    align-items: center;
+    text-transform: uppercase;
+    user-select: none;
+
+    transition: transform 50ms linear, box-shadow 120ms linear;
+}
+
+button:hover, button:focus {
+    box-shadow: 0 0 15px var(--buttonAccent);
+}
+
+button:active {
+    transform: scale(0.95);
+}
+
+input, textarea {
+    color: var(--inputAccent);
+    background-color: var(--inputBackAccent);
+    border-right-style: none;
+    border-left-style: none;
+    border-top-style: none;
+    border-bottom-style: none;
+    outline: none !important;
+    transition: box-shadow 120ms linear, transform 100ms ease-in-out;
+}
+
+input {
+    padding: 4px;
+}
+
+textarea {
+    padding: 6px;
+}
+
+input::placeholder {
+    user-select: none;
+    color: var(--inputAccent);
+    opacity: 50%;
+}
+
+textarea::placeholder {
+    user-select: none;
+    color: var(--inputAccent);
+    opacity: 45%;
+}
+
+input:focus {
+    box-shadow: 0 0 15px var(--inputAccent);
+}
+
+textarea:focus {
+    box-shadow: 0 0 15px var(--inputAccent);
+}
+
+img {
+    -webkit-user-drag: none;
+}
+
+svg {
+    vertical-align: middle;
+    transition: transform 150ms ease-in-out;
+}
+
+.content {
+    text-align: center;
+    margin: 0;
+    width: 100%;
+    border: none;
+}
+
+.linkAccented {
+    color: var(--linkAccent);
+    word-break: break-all;
+}
+
+.optionSvg {
+    display: none;
+    transition: opacity 300ms linear, transform 300ms linear;
+}
+
+.urlInput {
+    text-align: center;
+    position: relative;
+    border: 3px solid var(--inputAccent);
+    font-size: 23px;
+    height: 40px;
+    width: 85%;
+    display: inline-flex;
+    border-radius: 9px;
+    margin-right: 0;
+}
+
+.confirm {
+    display: inline-flex;
+    margin-left: 20px;
+    width: fit-content;
+    height: 60px;
+    padding: 5px;
+    vertical-align: middle;
+    font-size: 21px;
+    border-radius: 9px;
+    transition: opacity 200ms linear, transform 50ms linear, box-shadow 120ms linear;
+}
+
+.configRotateContainer {
+    z-index: 3;
+    position: fixed;
+    right: 35px;
+    bottom: 35px;
+    transition: transform 300ms cubic-bezier(0.7, 0, 0.3, 1), bottom 300ms cubic-bezier(0.7, 0, 0.3, 1);
+}
+
+.config {
+    height: 60px;
+    width: 60px;
+    border-radius: 9px;
+}
+
+.dimmer {
+    top: 0;
+    left: 0;
+    position: fixed;
+    display: none;
+    z-index: 1;
+    background-color: rgba(0, 0, 0, 0.65);
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    transition: opacity 200ms linear;
+}
+
+.resultOutput, .missingInfo, .didYouKnow {
+    position: relative;
+    left: 0;
+    right: 0;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    margin: auto;
+    width: 90%;
+    height: fit-content;
+    border-radius: 9px;
+    max-width: 90%;
+    display: none;
+    padding: 0 18px 0 18px;
+}
+
+.resultOutput {
+    display: none;
+    background-color: var(--textBackAccent);
+    color: var(--textAccent);
+}
+
+.missingInfo {
+    display: none;
+    background-color: var(--errorBackAccent);
+    color: var(--errorAccent);
+    margin-bottom: 30px;
+    margin-top: 5px;
+}
+
+.didYouKnow {
+    display: none;
+    background-color: var(--textBackAccent);
+    color: var(--textAccent);
+    margin-top: 30px;
+}
+
+.hr-text, .hr-error, .hr-text-thick, .hr-accent {
+    left: 0;
+    right: 0;
+    margin: auto;
+    width: 100%;
+}
+
+.hr-text, .hr-error, .hr-accent {
+    height: 2px;
+}
+
+.hr-text-thick {
+    height: 3px;
+}
+
+.hr-text, .hr-text-thick {
+    background-color: var(--textAccent);
+}
+
+.hr-error {
+    background-color: var(--errorAccent);
+}
+
+.hr-accent {
+    background-color: var(--buttonAccent);
+}
+
+.copyCitation, .openManualInput, .editCitation, .shareCitation {
+    position: relative;
+    display: inline-flex;
+    font-size: 21px;
+    height: 60px;
+    width: fit-content;
+    border-radius: 9px;
+    margin: 0px 10px 20px 10px;
+}
+
+.clearUrlInput {
+    height: 60px;
+    width: 60px;
+    border-radius: 9px;
+    vertical-align: middle;
+    display: inline-flex;
+    position: relative;
+}
+
+.menuOptionContainer {
+    display: flex;
+    width: 100%;
+    height: 80px;
+    align-items: center;
+    justify-content: right;
+    flex-direction: row-reverse;
+}
+
+.optionText {
+    padding: 20px;
+    font-weight: 600;
+    font-size: 17px;
+    background-image: radial-gradient(closest-side, var(--backgroundAccent), transparent);
+}
+
+.citationInput {
+    display: block;
+    border-radius: 9px;
+    height: 35px;
+    width: 95%;
+    text-align: center;
+    border: 3px solid var(--inputAccent);
+    font-size: 16px;
+}
+
+.citationInput:focus {
+    transform: scale(1.15);
+}
+
+.citationInputContainer {
+    justify-content: center;
+    align-items: center;
+    width: 95%;
+    margin: 12px 10px;
+    max-width: 400px;
+    display: inline-flex;
+    flex-direction: column;
+}
+
+.citationInputInputContainer {
+    width: 100%;
+    margin: 0 10px 10px 10px;
+}
+
+.citationInputDescription {
+    color: inherit;
+    width: fit-content;
+    margin-bottom: 12px;
+}
+
+.clearCitationInput {
+    vertical-align: middle;
+    height: 48px;
+    width: 48px;
+    border-radius: 9px;
+    margin-right: 14px;
+}
+
+.window {
+    background-color: var(--buttonBackAccent);
+    color: var(--buttonAccent);
+    border: 3px solid var(--buttonAccent);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    height: 54px;
+    width: 54px;
+    z-index: 2;
+    position: fixed;
+    border-radius: 9px;
+    margin: auto;
+
+    transition: height 300ms ease-in-out, width 300ms ease-in-out, bottom 300ms ease-in-out, right 300ms ease-in-out, border-width 300ms ease-in-out, background-color 300ms linear;
+}
+
+.popUp {
+    position: fixed;
+    display: flex;
+    top: -50px;
+    left: 0;
+    right: 0;
+    margin: auto;
+    height: fit-content;
+    width: 100%;
+    color: var(--textAccent);
+    background-color: var(--textBackAccent);
+    border-bottom: 3px solid var(--textAccent);
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 0 8pt rgba(0, 0, 0, 0.70);
+    user-select: none;
+    cursor: pointer;
+    z-index: 4;
+
+    transition: top 200ms ease-in-out, color 200ms linear, background-color 200ms linear;
+}
+
+.optionContainer {
+    display: inline-flex;
+    width: fit-content;
+    padding: 16px;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    border-radius: 9px;
+    border: 3px dotted var(--buttonAccent);
+    margin: 10px 4px;
+}
+
+.optionContent {
+    overflow-y: auto;
+    display: none;
+    opacity: 0;
+    padding: 4%;
+    width: 95%;
+    height: 95%;
+    color: var(--textAccent);
+
+    transition: opacity 200ms linear;
+}
+
+.optionTitle {
+    padding-bottom: 14px;
+    font-weight: 600;
+}
+
+.optionLeft, .optionMiddle, .optionRight, .optionTop, .optionCenter, .optionBottom {
+    display: inline-flex;
+    height: 45px;
+    width: fit-content;
+    margin: 0;
+
+    transition: background-color 200ms linear;
+}
+
+.optionLeft:active, .optionMiddle:active, .optionRight:active, .optionTop:active, .optionCenter:active, .optionBottom:active {
+    transform: scale(1);
+}
+
+.optionLeft:focus, .optionMiddle:focus, .optionRight:focus, .optionTop:focus, .optionCenter:focus, .optionBottom:focus {
+    box-shadow: none;
+}
+
+.optionLeft:hover, .optionMiddle:hover, .optionRight:hover, .optionTop:hover, .optionCenter:hover, .optionBottom:hover {
+    box-shadow: none;
+}
+
+.optionLeft {
+    border-radius: 9px 0 0 9px;
+    border-width: 3px 0 3px 3px;
+}
+
+.optionMiddle {
+    border-radius: 0;
+    border-width: 3px 0;
+}
+
+.optionRight {
+    border-radius: 0 9px 9px 0;
+    border-width: 3px 3px 3px 0;
+}
+
+.optionTop {
+    border-radius: 9px 9px 0 0;
+    border-width: 3px 3px 0px 3px;
+}
+
+.optionCenter {
+    border-radius: 0;
+    border-width: 0 3px;
+}
+
+.optionBottom {
+    border-radius: 0 0 9px 9px;
+    border-width: 0 3px 3px 3px;
+}
+
+.options {
+    display: flex;
+}
+
+.optionsVertical {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.checkbox {
+    margin: 8.5px 15px;
+    background-color: transparent;
+    cursor: pointer;
+    border-radius: 9px;
+    padding: 0;
+    height: 28px;
+    width: 28px;
+    border: 3px solid var(--buttonAccent);
+}
+
+.checkbox:hover {
+    box-shadow: none;
+}
+
+.checkbox:focus {
+    box-shadow: none;
+}
+
+.checkbox:active {
+    transform: scale(1);
+}
+
+.optionCitationPatternInput {
+    margin: 10px 0;
+    font-size: 16px;
+    border-radius: 9px;
+    border: 3px solid var(--inputAccent);
+    width: 94%;
+    max-width: 500px;
+    min-height: 16px;
+    resize: none;
+}
+
+.splashScreen {
+    flex-direction: column;
+    position: fixed;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    margin: auto;
+    background-color: rgb(34, 26, 15);
+    z-index: 5;
+
+    transition: opacity 150ms linear;
+}
+
+.variableName {
+    font-size: 16px;
+    padding-right: 10px;
+    font-weight: 600;
+    flex-shrink: 0;
+    max-width: 40%;
+    width: fit-content;
+    word-break: break-all;
+}
+
+.variableExplanation {
+    font-size: 13px;
+    padding-left: 8px;
+    word-wrap: break-word;
+    border-left: 2px solid var(--textAccent);
+}
+
+.centerFlex {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.variableDescription {
+    align-self: center;
+    padding: 18px 0;
+    width: fit-content;
+    left: 0;
+    right: 0;
+    margin: auto;
+}
+
+.variableDescriptionContainer {
+    width: fit-content;
+    left: 0;
+    right: 0;
+    margin: auto;
+}
+
+.historyCitationContainer {
+    cursor: pointer;
+    padding: 12px 0 12px 5px;
+    transition: background-color 150ms linear;
+}
+
+.historyCitationContainer:hover, .historyCitationContainer:focus {
+    background-color: var(--buttonBackAccent);
+}
+
+.historyLink {
+    display: flex;
+    text-align: left;
+    align-items: center;
+    margin-bottom: 5px;
+    min-height: 32px;
+    max-height: 60px;
+}
+
+.historyCitation {
+    display: -webkit-box;
+    font-size: 14px;
+    text-align: left;
+    overflow: hidden;
+    max-height: 60px;
+    text-overflow: ellipsis;
+    -webkit-line-clamp: 3;
+    line-clamp: 3;
+    -webkit-box-orient: vertical;
+}
+
+.historyWebImg {
+    flex-shrink: 0;
+    height: 26px;
+    margin-right: 10px;
+}
+
+.historyUrl {
+    word-break: break-all;
+    display: -webkit-box;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+    -webkit-box-orient: vertical;
+}
+
+.historyDate {
+    font-size: 16px;
+    font-weight: 600;
+    padding: 1.5px 0 6px 0;
+    text-align: left;
+}
+
+.startError {
+    margin: 0 25px 20px 25px;
+    padding: 10px;
+    color: var(--errorAccent);
+    font-family: 'Roboto Mono', 'Roboto', Arial;
+    background-color: var(--errorBackAccent);
+    border-radius: 9px;
+}
+
+.defPatternStandard {
+    font-size: 15px;
+    padding: 10px 20px;
+    background-color: var(--textBackAccent);
+    border-radius: 9px;
+    width: fit-content;
+    left: 0;
+    right: 0;
+    margin: auto;
+    margin-bottom: 12px;
+}
+
+.buttonText {
+    margin-right: 10px;
+}
+
+.buttonIcon {
+    margin: 0 10px;
+}
+
+.blockTitle {
+    margin: 15px 0 15px 0;
+    font-weight: 700;
+    font-size: 20px;
+}
+
+.loadingBar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    background-color: var(--buttonAccent);
+    height: 3px;
+    width: 0%;
+    transition: width 300ms cubic-bezier(0.7, 0, 0.3, 1), opacity 150ms linear;
+}
+
+</style>
+
+
+<body id="body" onload="start();">
+
+    <div id="splashScreen" class="splashScreen">
+        <noscript class="startError">
+            <b>This website requires javascript for basic functioning.</b><br><br>Please allow this website to use javascript. This website (excluding third parties I do not have in control) does not collect or use any personal information outside of your device.
+        </noscript>
+        <div id="startError" class="startError" style="display: none;">
+            <div style="padding: 15px 0; font-size: 22px; width: fit-content;" id="wentWrongText">Oh no. Something went wrong. Erasing data might help.</div>
+            <button type="button" title="vymazat data" class="confirm" style="margin: 10px;" onclick="resetSettings(true, true);" id="eraseDataSplash">
+                <div id="eraseDataTextSplash" class="buttonText">Erase data</div>
+                <svg class="buttonIcon" xmlns="http://www.w3.org/2000/svg" height="34px" viewBox="0 0 24 24" width="34px" fill=var(--buttonAccent)><path d="M0 0h24v24H0V0z" fill="none"/><path d="M14.12 10.47L12 12.59l-2.13-2.12-1.41 1.41L10.59 14l-2.12 2.12 1.41 1.41L12 15.41l2.12 2.12 1.41-1.41L13.41 14l2.12-2.12zM15.5 4l-1-1h-5l-1 1H5v2h14V4zM6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM8 9h8v10H8V9z"/></svg>
+            </button>
+        </div>
+        <div style="display: flex;">
+            <svg id="leftSplashQuote" style="margin-right: -38px; animation: knockerLeft 900ms cubic-bezier(0.7, 0, 0.3, 1) infinite;" height="140px" viewBox="0 0 24 24" width="140px" fill="rgb(237, 149, 49)" version="1.1" id="svg23" xmlns="http://www.w3.org/2000/svg" xmlns:svg="http://www.w3.org/2000/svg"><defs id="defs27" /><path d="M0 0h24v24H0V0z" fill="none" id="path19" /><path d="M 13.62,18 H 8.38 l 2,-4 H 8 V 6 h 8 v 7.24 z m -2,-2 h 0.76 L 14,12.76 V 8 h -4 v 4 h 3.62 z" id="path21" /></svg>
+            <svg id="rightSplashQuote" style="margin-left: -38px; animation: knockerRight 900ms cubic-bezier(0.7, 0, 0.3, 1) infinite;" height="140px" viewBox="0 0 24 24" width="140px" fill="rgb(237, 149, 49)" version="1.1" id="svg23" xmlns="http://www.w3.org/2000/svg" xmlns:svg="http://www.w3.org/2000/svg"><defs id="defs27" /><path d="M0 0h24v24H0V0z" fill="none" id="path19" /><path d="M 13.62,18 H 8.38 l 2,-4 H 8 V 6 h 8 v 7.24 z m -2,-2 h 0.76 L 14,12.76 V 8 h -4 v 4 h 3.62 z" id="path21" /></svg>
+        </div>
+    </div>
+
+    <div id="content" class="content">
+
+        <div id="relative" style="padding: 20px 0 20px 0; text-align: center; width: 100%; margin: auto;">
+            <h1 id="enterAdressText" style="padding-bottom: 10px; font-size: 28px;">
+                Enter website address
+            </h1>
+            <input onsubmit="getSource();" oninput="checkUrlInput();" title="website adress input field" autocapitalize="none" spellcheck="false" type="text" class="urlInput" id="urlInput">
+            <br>
+            <div style="display: flex; justify-content: center; align-items: center; padding: 30px 0;">
+                <button type="button" title="clear entered website adress" onclick="clearUrlInput();" id="clearUrlInput" class="clearUrlInput">
+                    <svg xmlns="http://www.w3.org/2000/svg" height="34px" viewBox="0 0 24 24" width="34px" fill=var(--buttonAccent)><path d="M0 0h24v24H0V0z" fill="none"/><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z"/></svg>
+                </button>
+                <button type="submit" title="generate citation of given website adress" class="confirm" onsubmit="getSource();" onclick="getSource();" id="confirm">
+                    <div id="generateText" class="buttonText">Generate</div>
+                    <svg id="loadingIcon" xmlns="http://www.w3.org/2000/svg" style="margin: 0 12px; transition: transform 500ms cubic-bezier(0.7, 0, 0.3, 1);" height="36px" viewBox="0 0 24 24" width="36px" fill=var(--buttonAccent)><path d="M.01 0h24v24h-24V0z" fill="none"/><path d="M12 4V1L8 5l4 4V6c3.31 0 6 2.69 6 6 0 1.01-.25 1.97-.7 2.8l1.46 1.46C19.54 15.03 20 13.57 20 12c0-4.42-3.58-8-8-8zm0 14c-3.31 0-6-2.69-6-6 0-1.01.25-1.97.7-2.8L5.24 7.74C4.46 8.97 4 10.43 4 12c0 4.42 3.58 8 8 8v3l4-4-4-4v3z"/></svg>
+                </button>
+            </div>
+            <div id="outputAnimator" style="display: flex; height: 0; transition: height 200ms ease-in-out, opacity 150ms linear; flex-direction: column; opacity: 0;">
+                <div id="output">
+                    <div id="missingInfo" class="missingInfo">
+                        <div id="noExtractText" class="blockTitle">
+                            Some information couldn't be extracted
+                        </div>
+                        <div id="hr-missing" class="hr-error"></div>
+                        <div id="missingContent" style="margin: 12px 0 12px 0; line-height: 30px;">
+                        </div>
+                        <button type="button" title="complete missing information" onclick="openManualInput();" id="openManualInput" class="openManualInput">
+                            <div id="completeInfoText" class="buttonText">Complete</div>
+                            <svg class="buttonIcon" xmlns="http://www.w3.org/2000/svg" height="34px" viewBox="0 0 24 24" width="34px" fill=var(--buttonAccent)><path d="M24 24H0V0h24v24z" fill="none" opacity=".87"/><path d="M16.59 8.59L12 13.17 7.41 8.59 6 10l6 6 6-6-1.41-1.41z"/></svg>
+                        </button>
+                        <div id="hr-missing2" class="hr-error" style="display: none;"></div>
+                        <div id="addMissingContent" style="margin: 10px 0 15px 0; display: none; width: 95%; flex-direction: column; align-items: center;">
+                            <div id="missingInputsContainer" style="display: block; position: relative; width: 100%;">
+                            </div>
+                        </div>
+                    </div>
+                    <div id="resultOutput" class="resultOutput">
+                        <div id="citationActions" style="padding-top: 20px;">
+                            <button type="button" title="edit citation" onclick="editCitation();" id="editCitation" class="editCitation">
+                                <div id="editCitationText" class="buttonText">Edit</div>
+                                <svg class="buttonIcon" xmlns="http://www.w3.org/2000/svg" height="34px" viewBox="0 0 24 24" width="34px" fill=var(--buttonAccent)><path d="M0 0h24v24H0V0z" fill="none"/><path d="M14.06 9.02l.92.92L5.92 19H5v-.92l9.06-9.06M17.66 3c-.25 0-.51.1-.7.29l-1.83 1.83 3.75 3.75 1.83-1.83c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.2-.2-.45-.29-.71-.29zm-3.6 3.19L3 17.25V21h3.75L17.81 9.94l-3.75-3.75z"/></svg>
+                            </button>
+                            <button type="button" title="copy citation" onclick="copyCitation();" id="copyCitation" class="copyCitation">
+                                <div id="copyCitationText" class="buttonText">Copy</div>
+                                <svg class="buttonIcon" xmlns="http://www.w3.org/2000/svg" height="34px" viewBox="0 0 24 24" width="34px" fill=var(--buttonAccent)><path d="M0 0h24v24H0V0z" fill="none"/><path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/></svg>
+                            </button>
+                            <button type="button" title="share citatation" onclick="shareCitation();" id="shareCitation" class="shareCitation">
+                                <div id="shareCitationText" class="buttonText">Share</div>
+                                <svg class="buttonIcon" xmlns="http://www.w3.org/2000/svg" height="34px" viewBox="0 0 24 24" width="34px" fill=var(--buttonAccent)><path d="M0 0h24v24H0V0z" fill="none"/><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81 1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9c-1.66 0-3 1.34-3 3s1.34 3 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.16c-.05.21-.08.43-.08.65 0 1.61 1.31 2.92 2.92 2.92s2.92-1.31 2.92-2.92c0-1.61-1.31-2.92-2.92-2.92zM18 4c.55 0 1 .45 1 1s-.45 1-1 1-1-.45-1-1 .45-1 1-1zM6 13c-.55 0-1-.45-1-1s.45-1 1-1 1 .45 1 1-.45 1-1 1zm12 7.02c-.55 0-1-.45-1-1s.45-1 1-1 1 .45 1 1-.45 1-1 1z"/></svg>
+                            </button>
+                        </div>
+                        <div id="hr-output" class="hr-text"></div>
+                        <div id="mainCitationContent" style="position: relative;">
+                            <svg version="1.1" style="position: absolute; right: 0px; top: 12px; width: 40px; height: 40px; transform: rotate(0.5turn);" viewBox="0.0 0.0 256.0 256.0" fill="none" stroke="none" stroke-linecap="square" stroke-miterlimit="10" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://www.w3.org/2000/svg"><clipPath id="p.0"><path d="m0 0l256.0 0l0 256.0l-256.0 0l0 -256.0z" clip-rule="nonzero"/></clipPath><g clip-path="url(#p.0)"><path fill="var(--buttonAccent)" fill-opacity="0.0" d="m0 0l256.0 0l0 256.0l-256.0 0z" fill-rule="evenodd"/><path fill=var(--buttonAccent) d="m91.81211 79.75852l0 57.890007l-20.265 38.593323l-8.684998 0l24.125 -48.24167l-43.425 0l0 -48.24166zm120.62501 0l0 57.890007l-20.265 38.593323l-8.685013 0l24.125 -48.24167l-43.424988 0l0 -48.24166zm-193.0 -24.12083l0 96.48332l27.984999 0l-24.124998 48.24167l63.690002 0l28.949997 -56.925156l0 -87.799835zm120.62501 0l0 96.48332l27.985 0l-24.125 48.24167l63.689987 0l28.950012 -56.925156l0 -87.799835z" fill-rule="evenodd"/></g></svg>
+                            <div id="citationOutput" style="padding: 60px 0 60px 0; word-break: break-word !important; width: 100%;"></div>
+                            <svg version="1.1" style="position: absolute; left: 0px; bottom: 12px; width: 40px; height: 40px;" viewBox="0.0 0.0 256.0 256.0" fill="none" stroke="none" stroke-linecap="square" stroke-miterlimit="10" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://www.w3.org/2000/svg"><clipPath id="p.0"><path d="m0 0l256.0 0l0 256.0l-256.0 0l0 -256.0z" clip-rule="nonzero"/></clipPath><g clip-path="url(#p.0)"><path fill="var(--buttonAccent)" fill-opacity="0.0" d="m0 0l256.0 0l0 256.0l-256.0 0z" fill-rule="evenodd"/><path fill=var(--buttonAccent) d="m91.81211 79.75852l0 57.890007l-20.265 38.593323l-8.684998 0l24.125 -48.24167l-43.425 0l0 -48.24166zm120.62501 0l0 57.890007l-20.265 38.593323l-8.685013 0l24.125 -48.24167l-43.424988 0l0 -48.24166zm-193.0 -24.12083l0 96.48332l27.984999 0l-24.124998 48.24167l63.690002 0l28.949997 -56.925156l0 -87.799835zm120.62501 0l0 96.48332l27.985 0l-24.125 48.24167l63.689987 0l28.950012 -56.925156l0 -87.799835z" fill-rule="evenodd"/></g></svg>
+                        </div>
+                        <div id="hr-editCitation" class="hr-text" style="display: none;"></div>
+                        <div id="editCitationArea" style="margin: 10px 0 15px 0; display: none; width: 95%; flex-direction: column; align-items: center;">
+                            <br>
+                            <div id="editCitationContainer" style="display: block; position: relative; width: 100%;">
+                            </div>
+                        </div>
+                    </div>
+                    <div id="didYouKnow" class="didYouKnow">
+                        <div id="didYouKnowText" class="blockTitle">
+                            Did you know?
+                        </div>
+                        <div id="hr-youKnow" class="hr-text"></div>
+                        <div id="youKnowContent" style="margin: 14px 0;">
+                        </div>
+                    </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="configRotateContainer" class="configRotateContainer">
+            <button type="button" title="menu" onclick="configMenu();" id="config" class="config">
+                <svg id="menuSvg" style="transition: opacity 150ms linear;" xmlns="http://www.w3.org/2000/svg" height="34px" viewBox="0 0 24 24" width="34px" fill=var(--buttonAccent)><path d="M0 0h24v24H0V0z" fill="none"/><path d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"/></svg>
+                <svg id="closeSvg" style="display: none; transition: opacity 150ms linear; opacity: 0;" xmlns="http://www.w3.org/2000/svg" height="35px" viewBox="0 0 24 24" width="35px" fill=var(--buttonAccent)><path d="M0 0h24v24H0V0z" fill="none"/><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z"/></svg>
+                <svg id="checkSvg" style="display: none; transition: opacity 150ms linear; opacity: 0;" xmlns="http://www.w3.org/2000/svg" height="34px" viewBox="0 0 24 24" width="34px" fill=var(--buttonAccent)><path d="M0 0h24v24H0V0z" fill="none"/><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z"/></svg>
+            </button>
+        </div>
+
+        <div onclick="popUp(null, null, null, true);" id="popUp" class="popUp">
+            <strong id="popUpContent" style="padding: 10px;">
+                Pop up!
+            </strong>
+        </div>
+
+        <div id="loadingBar" class="loadingBar"></div>
+
+        <div id="dimmer" class="dimmer">
+            <div style="position: absolute; width: 100%; height: 100%; left: 0; right: 0; top: 0; bottom: 0; margin: auto;" onclick="configMenu(undefined, true);"></div>
+
+            <div id="window" class="window">
+                <svg class="optionSvg" id="settingsSvg" xmlns="http://www.w3.org/2000/svg" height="34px" viewBox="0 0 24 24" width="34px" fill=var(--buttonAccent)><path d="M0 0h24v24H0V0z" fill="none"/><path d="M19.43 12.98c.04-.32.07-.64.07-.98 0-.34-.03-.66-.07-.98l2.11-1.65c.19-.15.24-.42.12-.64l-2-3.46c-.09-.16-.26-.25-.44-.25-.06 0-.12.01-.17.03l-2.49 1c-.52-.4-1.08-.73-1.69-.98l-.38-2.65C14.46 2.18 14.25 2 14 2h-4c-.25 0-.46.18-.49.42l-.38 2.65c-.61.25-1.17.59-1.69.98l-2.49-1c-.06-.02-.12-.03-.18-.03-.17 0-.34.09-.43.25l-2 3.46c-.13.22-.07.49.12.64l2.11 1.65c-.04.32-.07.65-.07.98 0 .33.03.66.07.98l-2.11 1.65c-.19.15-.24.42-.12.64l2 3.46c.09.16.26.25.44.25.06 0 .12-.01.17-.03l2.49-1c.52.4 1.08.73 1.69.98l.38 2.65c.03.24.24.42.49.42h4c.25 0 .46-.18.49-.42l.38-2.65c.61-.25 1.17-.59 1.69-.98l2.49 1c.06.02.12.03.18.03.17 0 .34-.09.43-.25l2-3.46c.12-.22.07-.49-.12-.64l-2.11-1.65zm-1.98-1.71c.04.31.05.52.05.73 0 .21-.02.43-.05.73l-.14 1.13.89.7 1.08.84-.7 1.21-1.27-.51-1.04-.42-.9.68c-.43.32-.84.56-1.25.73l-1.06.43-.16 1.13-.2 1.35h-1.4l-.19-1.35-.16-1.13-1.06-.43c-.43-.18-.83-.41-1.23-.71l-.91-.7-1.06.43-1.27.51-.7-1.21 1.08-.84.89-.7-.14-1.13c-.03-.31-.05-.54-.05-.74s.02-.43.05-.73l.14-1.13-.89-.7-1.08-.84.7-1.21 1.27.51 1.04.42.9-.68c.43-.32.84-.56 1.25-.73l1.06-.43.16-1.13.2-1.35h1.39l.19 1.35.16 1.13 1.06.43c.43.18.83.41 1.23.71l.91.7 1.06-.43 1.27-.51.7 1.21-1.07.85-.89.7.14 1.13zM12 8c-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4-1.79-4-4-4zm0 6c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2z"/></svg>
+                <svg class="optionSvg" id="historySvg" xmlns="http://www.w3.org/2000/svg" height="34px" viewBox="0 0 24 24" width="34px" fill=var(--buttonAccent)><path d="M0 0h24v24H0V0z" fill="none"/><path d="M13 3c-4.97 0-9 4.03-9 9H1l3.89 3.89.07.14L9 12H6c0-3.87 3.13-7 7-7s7 3.13 7 7-3.13 7-7 7c-1.93 0-3.68-.79-4.94-2.06l-1.42 1.42C8.27 19.99 10.51 21 13 21c4.97 0 9-4.03 9-9s-4.03-9-9-9zm-1 5v5l4.25 2.52.77-1.28-3.52-2.09V8z"/></svg>
+                <svg class="optionSvg" id="citationPatternSvg" xmlns="http://www.w3.org/2000/svg" height="36px" viewBox="0 0 24 24" width="36px" fill=var(--buttonAccent)><path d="M0 0h24v24H0V0z" fill="none"/><path d="M18.62 18h-5.24l2-4H13V6h8v7.24L18.62 18zm-2-2h.76L19 12.76V8h-4v4h3.62l-2 4zm-8 2H3.38l2-4H3V6h8v7.24L8.62 18zm-2-2h.76L9 12.76V8H5v4h3.62l-2 4z"/></svg>
+
+                <div id="citationPatternContent" class="optionContent">
+                    <h1 id="citationPatternTitle">Citation pattern</h1>
+                    <div id="defPatternStandard" class="defPatternStandard" role="note">
+                        The default pattern uses ISO 960-2011 standard.
+                    </div>
+                    <textarea oninput="optionsSelector('CitationPattern', document.getElementById('optionCitationPatternInput').value, 'Input')" spellcheck="false" title="citation pattern input field" id="optionCitationPatternInput" class="optionCitationPatternInput"></textarea>
+                    <h2 id="patternVariablesTitle">Pattern variables</h2>
+
+                    <div style="padding: 8px 0 18px 0;" id="webPageExample">
+                        Let's take this webpage as an example.
+                        <br>
+                        <span class="linkAccented" style="font-weight: 600;">https://www.historynet.com/civil-war/</span>
+                    </div>
+
+                    <div class="variableDescriptionContainer">
+                        <div class="centerFlex variableDescription">
+                            <div class="variableName">
+                                %title
+                            </div>
+                            <div class="variableExplanation" id="varTitleExplain">
+                                name/title of page you are citing from usually written on browser tab
+                                <br>
+                                <span class="linkAccented">The American Civil War — Facts, Events and Information</span>
+                            </div>
+                        </div>
+                        <div class="hr-accent"></div>
+                    </div>
+
+                    <div class="variableDescriptionContainer">
+                        <div class="centerFlex variableDescription">
+                            <div class="variableName">
+                                %indexWeb
+                            </div>
+                            <div class="variableExplanation" id="varindexWebExplain">
+                                home/index webpage of website
+                                <br>
+                                <span class="linkAccented">www.historynet.com</span>
+                            </div>
+                        </div>
+                        <div class="hr-accent"></div>
+                    </div>
+
+                    <div class="variableDescriptionContainer">
+                        <div class="centerFlex variableDescription">
+                            <div class="variableName">
+                                %copyright
+                            </div>
+                            <div class="variableExplanation" id="varCopyrightExplain">
+                                usually in footer area of webpage mentions author and year of website creation, current year or both
+                                <br>
+                                <span class="linkAccented">&copy; 2022 HistoryNet.</span>
+                            </div>
+                        </div>
+                        <div class="hr-accent"></div>
+                    </div>
+
+                    <div class="variableDescriptionContainer">
+                        <div class="centerFlex variableDescription">
+                            <div class="variableName" >
+                                %authorOnly
+                            </div>
+                            <div class="variableExplanation" id="varAuthorOnlyExplain">
+                                same as %copyright but without including any information about year
+                                <br>
+                                <span class="linkAccented">&copy; HistoryNet.</span>
+                            </div>
+                        </div>
+                        <div class="hr-accent"></div>
+                    </div>
+
+                    <div class="variableDescriptionContainer">
+                        <div class="centerFlex variableDescription">
+                            <div class="variableName" >
+                                %day, %month, %year
+                            </div>
+                            <div class="variableExplanation" id="varDateExplain">
+                                current day, month or year
+                            </div>
+                        </div>
+                        <div class="hr-accent"></div>
+                    </div>
+
+                    <div class="variableDescriptionContainer">
+                        <div class="centerFlex variableDescription">
+                            <div class="variableName">
+                                %fullUrl
+                            </div>
+                            <div class="variableExplanation" id="varFullUrlExplain">
+                                full adress with protocol from which can webpage page be acessed
+                                <br>
+                                <span class="linkAccented">https://www.historynet.com/civil-war/</span>
+                            </div>
+                        </div>
+                        <div class="hr-accent"></div>
+                    </div>
+
+                    <div class="variableDescriptionContainer">
+                        <div class="centerFlex variableDescription">
+                            <div class="variableName" >
+                                %givenUrl
+                            </div>
+                            <div class="variableExplanation" id="varGivenUrlExplain">
+                                adress exactly as you wrote it into the input field (given by user)
+                                <br>
+                                <span class="linkAccented">www.historynet.com/civil-war/</span>
+                            </div>
+                        </div>
+                        <div class="hr-accent"></div>
+                    </div>
+
+                    <div style="height: 110px;"></div>
+
+                </div>
+
+                <div id="settingsContent" class="optionContent">
+                    <h1 id="settingsTitle">Settings</h1>
+                    <div id="optionContainer" class="optionContainer">
+                        <div class="optionTitle">
+                            <div id="optionLanguageTitle" style="display: inline;">Language</div>
+                            <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px" fill=var(--textAccent)><path d="M0 0h24v24H0V0z" fill="none"/><path d="M12.87 15.07l-2.54-2.51.03-.03c1.74-1.94 2.98-4.17 3.71-6.53H17V4h-7V2H8v2H1v1.99h11.17C11.5 7.92 10.44 9.75 9 11.35 8.07 10.32 7.3 9.19 6.69 8h-2c.73 1.63 1.73 3.17 2.98 4.56l-5.09 5.02L4 19l5-5 3.11 3.11.76-2.04zM18.5 10h-2L12 22h2l1.12-3h4.75L21 22h2l-4.5-12zm-2.62 7l1.62-4.33L19.12 17h-3.24z"/></svg>
+                        </div>
+                        <div class="options">
+                            <button type="button" title="czech" id="optionLanguageCz" onclick="optionsSelector('Language', 'Cz', 'Button')" class="optionLeft">cz</button>
+                            <button type="button" title="slovak" id="optionLanguageSk" onclick="optionsSelector('Language', 'Sk', 'Button')" class="optionMiddle">sk</button>
+                            <button type="button" title="german" id="optionLanguageDe" onclick="optionsSelector('Language', 'De', 'Button')" class="optionMiddle">de</button>
+                            <button type="button" title="automatic language" id="optionLanguageAuto" onclick="optionsSelector('Language', 'Auto', 'Button')" class="optionMiddle">auto</button>
+                            <button type="button" title="english" id="optionLanguageEn" onclick="optionsSelector('Language', 'En', 'Button')" class="optionRight">en</button>
+                        </div>
+                    </div>
+                    <div id="optionContainer" class="optionContainer">
+                        <div class="optionTitle">
+                            <div id="optionThemeTitle" style="display: inline;">Theme</div>
+                            <svg style="display: inline; vertical-align: middle" xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px" fill=var(--textAccent)><path d="M0 0h24v24H0z" fill="none"/><path d="M20 15.31L23.31 12 20 8.69V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69zM12 18V6c3.31 0 6 2.69 6 6s-2.69 6-6 6z"/></svg>
+                        </div>
+                        <div class="options">
+                            <button type="button" title="dark theme" id="optionThemeDark" onclick="optionsSelector('Theme', 'Dark', 'Button')" class="optionLeft">Dark</button>
+                            <button type="button" title="automatic theme" id="optionThemeAuto" onclick="optionsSelector('Theme', 'Auto', 'Button')" class="optionMiddle">Auto</button>
+                            <button type="button" title="light theme" id="optionThemeLight" onclick="optionsSelector('Theme', 'Light', 'Button')" class="optionRight">Light</button>
+                        </div>
+                    </div>
+                    <div id="optionContainer" class="optionContainer">
+                        <div class="optionTitle">
+                            <div id="optionFontTitle" style="display: inline;">Font</div>
+                            <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px" fill=var(--textAccent)><path d="M0 0h24v24H0z" fill="none"/><path d="M2.5 4v3h5v12h3V7h5V4h-13zm19 5h-9v3h3v7h3v-7h3V9z"/></svg>
+                        </div>
+                        <div class="options">
+                            <button type="button" title="mono písmo" id="optionFontMono" onclick="optionsSelector('Font', 'Mono', 'Button')" class="optionLeft">Mono</button>
+                            <button type="button" title="regulérní písmo" id="optionFontNormal" onclick="optionsSelector('Font', 'Normal', 'Button')" class="optionRight">Normal</button>
+                        </div>
+                    </div>
+                    <div id="optionContainer" class="optionContainer">
+                        <div class="optionTitle">
+                            <div style="display: inline;" id="optionInterfaceTitle">Interface</div>
+                            <svg xmlns="http://www.w3.org/2000/svg" enable-background="new 0 0 24 24" height="24px" viewBox="0 0 24 24" width="24px" fill=var(--textAccent)><g><rect fill="none" height="24" width="24"/><rect fill="none" height="24" width="24"/><rect fill="none" height="24" width="24"/></g><g><g/><path d="M20,4H4C2.9,4,2.01,4.9,2.01,6L2,18c0,1.1,0.9,2,2,2h16c1.1,0,2-0.9,2-2V6C22,4.9,21.1,4,20,4z M4,9h10.5v3.5H4V9z M4,14.5 h10.5V18L4,18V14.5z M20,18l-3.5,0V9H20V18z"/></g></svg>
+                        </div>
+                        <div class="options">
+                            <div style="display: flex; justify-content: center; align-items: left; flex-direction: column;">
+                                <div id="optionEditButtonTitle" class="centerFlex" style="height: 33%;">Edit button</div>
+                                <div id="optionShareButtonTitle" class="centerFlex" style="height: 33%;">Share button</div>
+                                <div id="optionDidYouKnowHintTitle" class="centerFlex" style="height: 33%;">'Did you know?' hint</div>
+                            </div>
+                            <div class="centerFlex" style="flex-direction: column;">
+                                <button role="checkbox" id="editButtonCheckbox" type="button" title="edit button enable/disable" onclick="optionsSelector('EditButton', null, 'Checkbox')" class="centerFlex checkbox">
+                                    <svg id="checkEditButton" xmlns="http://www.w3.org/2000/svg" height="30px" viewBox="0 0 24 24" width="30px" fill=var(--buttonAccent)><path d="M0 0h24v24H0V0z" fill="none"/><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z"/></svg>
+                                </button>
+                                <button role="checkbox" id="shareButtonCheckbox" type="button" title="share button enable/disable" onclick="optionsSelector('ShareButton', null, 'Checkbox')" class="centerFlex checkbox">
+                                    <svg id="checkShareButton" xmlns="http://www.w3.org/2000/svg" height="30px" viewBox="0 0 24 24" width="30px" fill=var(--buttonAccent)><path d="M0 0h24v24H0V0z" fill="none"/><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z"/></svg>
+                                </button>
+                                <button role="checkbox" id="didYouKnowHintCheckbox" type="button" title="'Did you know' hint enable/disable" onclick="optionsSelector('DidYouKnowHint', null, 'Checkbox')" class="centerFlex checkbox">
+                                    <svg id="checkDidYouKnowHint" xmlns="http://www.w3.org/2000/svg" height="30px" viewBox="0 0 24 24" width="30px" fill=var(--buttonAccent)><path d="M0 0h24v24H0V0z" fill="none"/><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z"/></svg>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="options">
+                        </div>
+                    </div>
+                    <div id="optionContainer" class="optionContainer">
+                        <div class="optionTitle">
+                            <div id="optionProxyTitle" style="display: inline;">Proxy server</div>
+                            <svg style="display: inline; vertical-align: middle;" xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px" fill=var(--textAccent)><path d="M0 0h24v24H0V0z" fill="none"/><path d="M19 15v4H5v-4h14m1-2H4c-.55 0-1 .45-1 1v6c0 .55.45 1 1 1h16c.55 0 1-.45 1-1v-6c0-.55-.45-1-1-1zM7 18.5c-.82 0-1.5-.67-1.5-1.5s.68-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5zM19 5v4H5V5h14m1-2H4c-.55 0-1 .45-1 1v6c0 .55.45 1 1 1h16c.55 0 1-.45 1-1V4c0-.55-.45-1-1-1zM7 8.5c-.82 0-1.5-.67-1.5-1.5S6.18 5.5 7 5.5s1.5.68 1.5 1.5S7.83 8.5 7 8.5z"/></svg>
+                        </div>
+                        <div class="optionsVertical">
+                            <button type="button" title="api.codetabs.com" id="optionProxyCodetabs" onclick="optionsSelector('Proxy', 'Codetabs', 'Button')" class="optionTop" style="width: 165px;">api.codetabs.com</button>
+                            <button type="button" title="ntfy.sh" id="optionProxyNtfy" onclick="optionsSelector('Proxy', 'Ntfy', 'Button')" class="optionBottom" style="width: 165px;">ntfy.sh</button>
+                        </div>
+                    </div>
+                    <button type="button" title="vymazat data" class="confirm" style="margin: 10px;" onclick="resetSettings(true);" id="eraseData">
+                        <div id="eraseDataText" class="buttonText">Erase data</div>
+                        <svg class="buttonIcon" xmlns="http://www.w3.org/2000/svg" height="34px" viewBox="0 0 24 24" width="34px" fill=var(--buttonAccent)><path d="M0 0h24v24H0V0z" fill="none"/><path d="M14.12 10.47L12 12.59l-2.13-2.12-1.41 1.41L10.59 14l-2.12 2.12 1.41 1.41L12 15.41l2.12 2.12 1.41-1.41L13.41 14l2.12-2.12zM15.5 4l-1-1h-5l-1 1H5v2h14V4zM6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM8 9h8v10H8V9z"/></svg>
+                    </button>
+                    <div style="height: 100px;"></div>
+                </div>
+
+                <div id="historyContent" class="optionContent">
+                    <h1 id="historyTitle">History</h1>
+                    <div class="hr-accent"></div>
+                    <div id="nothingIsHere" style="padding: 30px; font-size: 22px; font-weight: 600;">
+                        <font size="+3">¯\_(ツ)_/¯</font><br>nothing's here
+                    </div>
+                    <div id="innerHistory">
+                    </div>
+                    <div style="height: 100px;"></div>
+                </div>
+
+            </div>
+            <div role="menu" id="menuOptions" style="position: fixed; height: fit-content; width: fit-content; bottom: 105px; right: 35px; display: flex; flex-direction: column-reverse;">
+                <div id="settingsOptionContainer" class="menuOptionContainer">
+                    <button role="menuitem button" type="button" title="settings" id="settings" onclick="openOptions('settings', true)" class="config">
+                        <svg xmlns="http://www.w3.org/2000/svg" height="34px" viewBox="0 0 24 24" width="34px" fill=var(--buttonAccent)><path d="M0 0h24v24H0V0z" fill="none"/><path d="M19.43 12.98c.04-.32.07-.64.07-.98 0-.34-.03-.66-.07-.98l2.11-1.65c.19-.15.24-.42.12-.64l-2-3.46c-.09-.16-.26-.25-.44-.25-.06 0-.12.01-.17.03l-2.49 1c-.52-.4-1.08-.73-1.69-.98l-.38-2.65C14.46 2.18 14.25 2 14 2h-4c-.25 0-.46.18-.49.42l-.38 2.65c-.61.25-1.17.59-1.69.98l-2.49-1c-.06-.02-.12-.03-.18-.03-.17 0-.34.09-.43.25l-2 3.46c-.13.22-.07.49.12.64l2.11 1.65c-.04.32-.07.65-.07.98 0 .33.03.66.07.98l-2.11 1.65c-.19.15-.24.42-.12.64l2 3.46c.09.16.26.25.44.25.06 0 .12-.01.17-.03l2.49-1c.52.4 1.08.73 1.69.98l.38 2.65c.03.24.24.42.49.42h4c.25 0 .46-.18.49-.42l.38-2.65c.61-.25 1.17-.59 1.69-.98l2.49 1c.06.02.12.03.18.03.17 0 .34-.09.43-.25l2-3.46c.12-.22.07-.49-.12-.64l-2.11-1.65zm-1.98-1.71c.04.31.05.52.05.73 0 .21-.02.43-.05.73l-.14 1.13.89.7 1.08.84-.7 1.21-1.27-.51-1.04-.42-.9.68c-.43.32-.84.56-1.25.73l-1.06.43-.16 1.13-.2 1.35h-1.4l-.19-1.35-.16-1.13-1.06-.43c-.43-.18-.83-.41-1.23-.71l-.91-.7-1.06.43-1.27.51-.7-1.21 1.08-.84.89-.7-.14-1.13c-.03-.31-.05-.54-.05-.74s.02-.43.05-.73l.14-1.13-.89-.7-1.08-.84.7-1.21 1.27.51 1.04.42.9-.68c.43-.32.84-.56 1.25-.73l1.06-.43.16-1.13.2-1.35h1.39l.19 1.35.16 1.13 1.06.43c.43.18.83.41 1.23.71l.91.7 1.06-.43 1.27-.51.7 1.21-1.07.85-.89.7.14 1.13zM12 8c-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4-1.79-4-4-4zm0 6c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2z"/></svg>
+                    </button>
+                    <div id="settingsText" class="optionText">Settings</div>
+                </div>
+                <div id="historyOptionContainer" class="menuOptionContainer">
+                    <button role="menuitem button" type="button" title="history" id="history" onclick="openOptions('history', true)" class="config">
+                        <svg xmlns="http://www.w3.org/2000/svg" height="34px" viewBox="0 0 24 24" width="34px" fill=var(--buttonAccent)><path d="M0 0h24v24H0V0z" fill="none"/><path d="M13 3c-4.97 0-9 4.03-9 9H1l3.89 3.89.07.14L9 12H6c0-3.87 3.13-7 7-7s7 3.13 7 7-3.13 7-7 7c-1.93 0-3.68-.79-4.94-2.06l-1.42 1.42C8.27 19.99 10.51 21 13 21c4.97 0 9-4.03 9-9s-4.03-9-9-9zm-1 5v5l4.25 2.52.77-1.28-3.52-2.09V8z"/></svg>
+                    </button>
+                    <div id="historyText" class="optionText">History</div>
+                </div>
+                <div id="citationPatternOptionContainer" class="menuOptionContainer">
+                    <button role="menuitem button" type="button" title="citation pattern" id="citationPattern" onclick="openOptions('citationPattern', true)" class="config">
+                        <svg xmlns="http://www.w3.org/2000/svg" height="36px" viewBox="0 0 24 24" width="36px" fill=var(--buttonAccent)><path d="M0 0h24v24H0V0z" fill="none"/><path d="M18.62 18h-5.24l2-4H13V6h8v7.24L18.62 18zm-2-2h.76L19 12.76V8h-4v4h3.62l-2 4zm-8 2H3.38l2-4H3V6h8v7.24L8.62 18zm-2-2h.76L9 12.76V8H5v4h3.62l-2 4z"/></svg>
+                    </button>
+                    <div id="citationPatternText" class="optionText">Citation pattern</div>
+                </div>
+            </div>
+        </div>
+
+        <div onclick="hideMoreOptions();" id="moreOptions" style="display: none; position: fixed; left: 0; right: 0; margin: auto; bottom: 0; height: 250px; justify-content: right; align-items: flex-end; z-index: 1; background-image: linear-gradient(transparent, var(--backgroundAccent));  transition: opacity 150ms linear;">
+            <div style="display: flex; height: 130px; justify-content: center; align-items: center; margin-right: 112px;">
+                <strong style="padding: 10px 13px 10px 16px; text-align: right; font-size: 15px;" id="moreFunctionsHere">you can find more options here</strong>
+                <svg style="flex-shrink: 0;" xmlns="http://www.w3.org/2000/svg" height="40px" viewBox="0 0 24 24" width="40px" fill=var(--textAccent)><path d="M0 0h24v24H0V0z" fill="none"/><path d="M12 4l-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8-8-8z"/></svg>
+            </div>
+        </div>
+
+        <footer style="position: absolute; width: 100%; height: fit-content; font-size: 14px; padding-bottom: 125px; background-image: linear-gradient(to bottom, var(--textBackAccent), var(--backgroundAccent)); color: var(--textAccent); left: 0; right: 0; margin-top: 14px;">
+            <div style="padding: 15px 10px;">
+                <div id="thanksCodetabsText">
+                    Works thanks to <a href="https://codetabs.com/" target="_blank">CodeTabs</a> and <a href="https://ntfy.sh/" target="_blank">ntfy</a>.
+                </div>
+                <br>
+                <div id="versionText">v 1.1.6</div>
+            </div>
+        </footer>
+
+    </div>
+
+    <input id="copyHelper" style="position: fixed; top: -100px; height: 10px; display: none;">
+
+</body>
+
+
+<script type="text/javascript">
+
+document.addEventListener('keydown', function(event) {
+    // console.log("keydown: " + event.keyCode);
+    if (event.keyCode == 16) {
+        shift = true;
+    } else if (event.keyCode == 192 && shift != undefined && typeof originalResponse != "undefined") {
+        if (shift) {
+            shift = false;
+            console.log("shift and ; shortcut detected");
+            copyText(originalResponse);
+            popUp("original server response copyed", 2500, "info");
+        }
+    }
+});
+
+document.addEventListener('keyup', function(event) {
+    // console.log("keyup: " + event.keyCode);
+    if (event.keyCode == 13 && document.activeElement.id == "urlInput") {
+        getSource();
+    } else if (event.keyCode == 16) {
+        globalThis.shift = false;
+    } else if (event.keyCode == 27 && activeWindow != null) {
+        configMenu();
+    }
+});
+
+function start() {
+
+    try {
+        globalThis.cssVariables = document.querySelector(':root');
+        globalThis.pageLoading = true;
+
+        globalThis.moreOptionsShowing = false;
+
+        setTimeout(function() {
+            if (location.href.includes("000webhostapp")) {
+                try {
+                    document.querySelector("div[style='text-align: right;position: fixed;z-index:9999999;bottom: 0;width: auto;right: 1%;cursor: pointer;line-height: 0;display:block !important;']").style.display = "none";
+                } catch (error) {
+                    console.warn("banner was not found");
+                }
+            }
+
+            if (window.location.href.includes("sweb")) {
+                try {
+                    var banners = document.querySelectorAll("div[id='sklik-banner']");
+                    for (loop of banners) {
+                        loop.style.display = "none";
+                    }
+                } catch (error) {
+                    console.warn("banner was not found");
+                    console.error(error);
+                }
+            }
+        }, 100);
+
+        globalThis.localization = [
+
+            //innerHTML
+            {objectType: "innerHTML", object: "didYouKnowText;", En: "Did you know?", Cz: "Věděli jste?", De: "Wussten Sie das?", Sk: "Vedeli ste to?"},
+            {objectType: "innerHTML", object: "eraseDataText;", En: "erase data", Cz: "vymazat data", De: "Daten löschen", Sk: "vymazať údaje"},
+            {objectType: "innerHTML", object: "generateText;", En: "generate", Cz: "vygenerovat", De: "erzeugen", Sk: "Generovať"},
+            {objectType: "innerHTML", object: "settingsText;settingsTitle;", En: "Settings", Cz: "Nastavení", De: "Einstellungen", Sk: "Nastavenia"},
+            {objectType: "innerHTML", object: "optionInterfaceTitle;", En: "Interface", Cz: "Rozhraní", De: "Schnittstelle", Sk: "Rozhranie"},
+            {objectType: "innerHTML", object: "moreFunctionsHere;", En: "you can find more options here", Cz: "více možností najdete zde", De: "Weitere Optionen finden Sie hier", Sk: "viac možností nájdete tu"},
+            {objectType: "innerHTML", object: "enterAdressText;", En: "Enter webpage address.", Cz: "Zadejte adresu webové stránky.", De: "Geben Sie die Adresse der Webseite ein.", Sk: "Zadajte adresu webovej stránky."},
+            {objectType: "innerHTML", object: "thanksCodetabsText;", En: 'Works thanks to <a href="https://codetabs.com/" target="_blank">CodeTabs</a> and <a href="https://ntfy.sh/" target="_blank">ntfy</a>.', Cz: 'Funguje díky <a href="https://codetabs.com/" target="_blank">CodeTabs</a> a <a href="https://ntfy.sh/" target="_blank">ntfy</a>.', De: 'Funktioniert dank <a href="https://codetabs.com/" target="_blank">CodeTabs</a> und <a href="https://ntfy.sh/" target="_blank">ntfy</a>.', Sk: 'Funguje vďaka <a href="https://codetabs.com/" target="_blank">CodeTabs</a> a <a href="https://ntfy.sh/" target="_blank">ntfy</a>.'},
+            {objectType: "innerHTML", object: "historyText;historyTitle;", En: "History", Cz: "Historie", De: "Geschichte", Sk: "História"},
+            {objectType: "innerHTML", object: "nothingIsHere;", En: "<font size=" + '"' + "+3" + '"' + ">¯\\_(ツ)_/¯</font><br>nothing's here", Cz: "<font size=" + '"' + "+3" + '"' + ">¯\\_(ツ)_/¯</font><br>kde nic tu nic", De: "<font size=" + '"' + "+3" + '"' + ">¯\\_(ツ)_/¯</font><br>nichts ist da", Sk: "<font size=" + '"' + "+3" + '"' + ">¯\\_(ツ)_/¯</font><br>kde nič tu nič"},
+            {objectType: "innerHTML", object: "optionThemeDark;", En: "Dark", Cz: "Tmavé", De: "Dunkel", Sk: "Tmavé"},
+            {objectType: "innerHTML", object: "optionThemeLight;", En: "Light", Cz: "Světlé", De: "Licht", Sk: "Svetlé"},
+            {objectType: "innerHTML", object: "copyCitationText;", En: "copy", Cz: "kopírovat", De: "kopieren", Sk: "kopírovať"},
+            {objectType: "innerHTML", object: "defPatternStandard;", En: "The default pattern uses ISO 960-2011 standard.", Cz: "Výchozí schéma používá normu ISO 960-2011.", De: "Das Standardmuster verwendet die Norm ISO 960-2011.", Sk: "Predvolená schéma používa normu ISO 960-2011."},
+            {objectType: "innerHTML", object: "citationPatternTitle;citationPatternText;", En: "Citation pattern", Cz: "Schéma citace", De: "Zitiermuster", Sk: "Schéma citácie"},
+            {objectType: "innerHTML", object: "optionThemeTitle;", En: "Theme", Cz: "Téma", De: "Thema", Sk: "Téma"},
+            {objectType: "innerHTML", object: "shareCitationText;", En: "share", Cz: "sdílet", De: "Aktie", Sk: "zdieľať"},
+            {objectType: "innerHTML", object: "editCitationText;", En: "edit", Cz: "upravit", De: "bearbeiten", Sk: "upraviť"},
+            {objectType: "innerHTML", object: "optionFontNormal;", En: "regular", Cz: "regulérní", De: "regulär", Sk: "regulárne"},
+            {objectType: "innerHTML", object: "noExtractText;", En: "Some information couldn't be extracted.", Cz: "Některé informace se nepodařilo extrahovat.", De: "Einige Informationen konnten nicht extrahiert werden.", Sk: "Niektoré informácie sa nepodarilo extrahovať."},
+            {objectType: "innerHTML", object: "completeInfoText;", En: "complete", Cz: "doplnit", De: "vollständig", Sk: "doplniť"},
+            {objectType: "innerHTML", object: "optionFontTitle;", En: "Font", Cz: "Písmo", De: "Schriftart", Sk: "Písmo"},
+            {objectType: "innerHTML", object: "optionLanguageTitle;", En: "Language", Cz: "Jazyk", De: "Sprache", Sk: "Jazyk"},
+            {objectType: "innerHTML", object: "optionEditButtonTitle;", En: "Edit button", Cz: "Tlačítko úprav", De: 'Schaltfläche "Bearbeiten', Sk: 'Tlačidlo úprav'},
+            {objectType: "innerHTML", object: "optionShareButtonTitle;", En: "Share button", Cz: "Tlačítko sdílení", De: 'Schaltfläche "Teilen', Sk: 'Tlačidlo zdieľania'},
+            {objectType: "innerHTML", object: "optionDidYouKnowHintTitle;", En: "'Did you know?' hint", Cz: "„Věděli jste?“ nápověda", De: 'Wusstest du das?" Hinweis', Sk: '"Vedeli ste?" pomocník'},
+            {objectType: "innerHTML", object: "patternVariablesTitle;", En: "Pattern variables", Cz: "Proměnné schématu", De: "Schema-Variablen", Sk: "Premenné schémy"},
+            {objectType: "innerHTML", object: "webPageExample;", En: 'Let' + "'" + 's take this webpage as an example.<br><span class="linkAccented" style="font-weight: 600;">https://www.historynet.com/civil-war/</span>', Cz: 'Pojďme použít tuto stránku jako příklad.<br><span class="linkAccented" style="font-weight: 600;">https://www.historynet.com/civil-war/</span>', De: 'Nehmen wir diese Webseite als Beispiel.<br><span class="linkAccented" style="font-weight: 600;">https://www.historynet.com/civil-war/</span>', Sk: 'Poďme použiť túto stránku ako príklad.<br><span class="linkAccented" style="font-weight: 600;">https://www.historynet.com/civil-war/</span>'},
+            {objectType: "innerHTML", object: "varTitleExplain;", En: 'name/title of page you are citing from usually written on browser tab<br><span class="linkAccented">The American Civil War — Facts, Events and Information</span>', Cz: 'název/titulek stránky kterou citujete obvykle napsaný na kartě prohlížeče<br><span class="linkAccented">The American Civil War — Facts, Events and Information</span>', De: 'Name/Titel der Seite, aus der Sie zitieren, normalerweise in der Browser-Registerkarte<br><span class="linkAccented">Der amerikanische Bürgerkrieg - Fakten, Ereignisse und Informationen</span>', Sk: 'názov/titulok stránky ktorú citujete obvykle napísaný na karte prehliadača<br><span class="linkAccented">The American Civil War — Facts, Events and Information</span>'},
+            {objectType: "innerHTML", object: "varCopyrightExplain;", En: 'usually in footer area of webpage mentions author and year of website creation, current year or both<br><span class="linkAccented">&copy; 2022 HistoryNet.</span>', Cz: 'obvykle umístěný v patičce stránky odkazuje na autora stránky a rok vzniku, nynější rok, nebo obojí<br><span class="linkAccented">&copy; 2022 HistoryNet.</span>', De: 'In der Regel werden im Fußbereich der Website der Autor und das Jahr der Erstellung der Website, das aktuelle Jahr oder beides genannt<br><span class="linkAccented">&copy; 2022 HistoryNet.</span>', Sk: 'obvykle umiestnený v pätičke stránky odkazuje na autora stránky a rok vzniku, terajší rok, alebo oboje<br><span class="linkAccented">&copy; 2022 HistoryNet.</span>'},
+            {objectType: "innerHTML", object: "varAuthorOnlyExplain;", En: 'same as %copyright but without including any information about year<br><span class="linkAccented">&copy; HistoryNet.</span>', Cz: 'stejné jako %copyright, ale neobsahuje žádné roky<br><span class="linkAccented">&copy; HistoryNet.</span>', De: 'wie %copyright, jedoch ohne Angabe des Jahres<br><span class="linkAccented">&copy; HistoryNet.</span>', Sk: 'rovnaké ako %copyright, ale neobsahuje žiadne roky<br><span class="linkAccented">&copy; HistoryNet.</span>'},
+            {objectType: "innerHTML", object: "varFullUrlExplain;", En: 'full adress with protocol from which can webpage page be acessed<br><span class="linkAccented">https://www.historynet.com/civil-war/</span>', Cz: 'celá adresa i s protokolem ze které je webová stránka dostupná<br><span class="linkAccented">https://www.historynet.com/civil-war/</span>', De: 'vollständige Adresse mit Protokoll, von der aus die Webseite aufgerufen werden kann<br><span class="linkAccented">https://www.historynet.com/civil-war/</span>', Sk: 'celá adresa aj s protokolom z ktorej je webová stránka dostupná<br><span class="linkAccented">https://www.historynet.com/civil-war/</span>'},
+            {objectType: "innerHTML", object: "varindexWebExplain;", En: 'home/index webpage of website<br><span class="linkAccented">www.historynet.com</span>', Cz: 'domovská stránka domény<br><span class="linkAccented">www.historynet.com</span>', De: 'Startseite/Indexseite der Website<br><span class="linkAccented">www.historynet.com</span>', Sk: 'domovská stránka domény<br><span class="linkAccented">www.historynet.com</span>'},
+            {objectType: "innerHTML", object: "varGivenUrlExplain;", En: 'adress exactly as you wrote it into the input field (given by user)<br><span class="linkAccented">https://www.historynet.com/civil-war/</span>', Cz: 'adresa přesně tak jak jste ji napsali do vstupního pole (zadaná uživatelem)<br><span class="linkAccented">https://www.historynet.com/civil-war/</span>', De: 'Adresse genau so, wie Sie sie in das Eingabefeld geschrieben haben (vom Benutzer angegeben)<br><span class="linkAccented">https://www.historynet.com/civil-war/</span>', Sk: 'adresa presne tak ako ste ju napísali do vstupného poľa (zadaná užívateľom)<br><span class="linkAccented">https://www.historynet.com/civil-war/</span>'},
+            {objectType: "innerHTML", object: "varDateExplain;", En: 'current day, month or year', Cz: 'aktuální den, měsíc, nebo rok', De: 'aktueller Tag, Monat oder Jahr', Sk: 'aktuálny deň, mesiac, alebo rok'},
+
+
+            //title
+            {objectType: "title", object: "clearUrlInput;", En: "clear entered website adress", Cz: "vymazat zadanou adresu webové stránky", De: "eingegebene Website-Adresse löschen", Sk: "vymazať zadanú adresu webovej stránky"},
+            {objectType: "title", object: "confirm;", En: "generate citation of given adress", Cz: "generovat citaci zadané adresy webové stránky", De: "Erzeugen eines Zitats der angegebenen Adresse", Sk: "generovať citáciu zadanej adresy webovej stránky"},
+            {objectType: "title", object: "urlInput;", En: "website adress input field", Cz: "zadávací pole adresy webové stránky", De: "Eingabefeld für die Adresse der Website", Sk: "zadávacie pole adresy webovej stránky"},
+            {objectType: "title", object: "shareButtonCheckbox;", En: "share button enable/disable", Cz: "tlačítko sdílení zapnout/vypnout", De: "Freigabeknopf aktivieren/deaktivieren", Sk: "tlačidlo zdieľania zapnúť/vypnúť"},
+            {objectType: "title", object: "editButtonCheckbox;", En: "edit button enable/disable", Cz: "tlačítko úprav zapnout/vypnout", De: "Bearbeiten-Schaltfläche aktivieren/deaktivieren", Sk: "tlačidlo úprav zapnúť/vypnúť"},
+            {objectType: "title", object: "didYouKnowHintCheckbox;", En: "'Did you know?' hint enable/disable", Cz: "„Věděli jste?“ nápověda zapnout/vypnout", De: 'Wusstest du das?" Hinweis aktivieren/deaktivieren', Sk: '„Vedeli ste?“ pomocník zapnúť/vypnúť'},
+            {objectType: "title", object: "optionFontMono;", En: "mono font", Cz: "mono písmo", De: "Monoschrift", Sk: "mono písmo"},
+            {objectType: "title", object: "optionFontNormal;", En: "regular font", Cz: "regulérní písmo", De: "normale Schriftart", Sk: "regulárne písmo"},
+            {objectType: "title", object: "optionThemeDark;", En: "dark theme", Cz: "tmavé téma", De: "dunkles Thema", Sk: "tmavá téma"},
+            {objectType: "title", object: "optionThemeAuto;", En: "automatic theme", Cz: "automatické téma", De: "automatisches Thema", Sk: "automatická téma"},
+            {objectType: "title", object: "optionThemeLight;", En: "light theme", Cz: "světlé téma", De: "", Sk: "svetlá téma"},
+            {objectType: "title", object: "optionLanguageCz;", En: "czech", Cz: "česky", De: "Tschechisch", Sk: "český"},
+            {objectType: "title", object: "optionLanguageDe;", En: "german", Cz: "německy", De: "Deutsch", Sk: "nemecky"},
+            {objectType: "title", object: "optionLanguageSk;", En: "slovak", Cz: "slovensky", De: "Slowakisch", Sk: "slovensky"},
+            {objectType: "title", object: "optionLanguageAuto;", En: "automatic language", Cz: "automatický jazyk", De: "automatische Sprache", Sk: "automatický jazyk"},
+            {objectType: "title", object: "optionLanguageEn;", En: "english", Cz: "anglicky", De: "Englisch", Sk: "anglicky"},
+            {objectType: "title", object: "settings;", En: "settings", Cz: "nastavení", De: "Einstellungen", Sk: "nastavenie"},
+            {objectType: "title", object: "history;", En: "history", Cz: "historie", De: "Geschichte", Sk: "história"},
+            {objectType: "title", object: "citationPattern;", En: "citation pattern", Cz: "schéma citace", De: "Zitiermuster", Sk: "schéma citácie"},
+            {objectType: "title", object: "optionCitationPatternInput;", En: "citation pattern input field", Cz: "vstupní pole schématu citace", De: "Eingabefeld für Zitiermuster", Sk: "vstupné pole schémy citácie"},
+            {objectType: "title", object: "eraseData;", En: "erase data", Cz: "vymazat data", De: "Daten löschen", Sk: "vymazať dáta"},
+            {objectType: "title", object: "copyCitation;", En: "copy citation", Cz: "zkopírovat citaci", De: "Zitat kopieren", Sk: "skopírovať citáciu"},
+            {objectType: "title", object: "editCitation;", En: "edit citation", Cz: "upravit citaci", De: "Zitat bearbeiten", Sk: "upraviť citáciu"},
+            {objectType: "title", object: "shareCitation;", En: "share citation", Cz: "sdílet citaci", De: "Aktienzitat", Sk: "zdieľať citáciu"},
+            {objectType: "title", object: "openManualInput;", En: "complete missing informations", Cz: "doplnit chybějící informace", De: "fehlende Informationen ergänzen", Sk: "doplniť chýbajúce informácie"},
+
+            //script
+            {objectType: "script", object: "didYouKnowWikiCitation;", En: "Did you know that <span style=" + '"display: inline; font-weight: 700"' + ">Wikipedia has its own citations</span> you can use? You can find the option in Wikipedia destkop version in side menu of the page in section of tools. It's called 'Cite this page'.<br><br>Wikipedia citation for this page is availible here:<br>", Cz: "Věděli jste, že <span style=" + '"font-weight: 700;"' + ">Wikipedie má vlastní citace</span>, které můžete používat? Možnost můžete najít ve verzi stránky pro počítače v bočním menu v sekci nástroje. Je nazvaná „Citovat stránku“.<br><br>Citace od Wikipedie pro tuto stránku je dostupná zde:<br>", De: "Wussten Sie, dass <span style=" + '"font-weight: 700;"' + ">Wikipedia hat seine eigenen Zitate</span> die Sie verwenden können? Sie finden die Option in der Wikipedia destkop Version im Seitenmenü der Seite im Bereich der Werkzeuge. Sie heißt " + '"Artikel zitieren"' + ".<br><br>Das Wikipedia-Zitat für diese Seite finden Sie hier:<br>", Sk: "Věděli jste, že <span style=" + '"font-weight: 700;"' + ">Wikipedie má vlastní citace</span>, které můžete používat? Možnost můžete najít ve verzi stránky pro počítače v bočním menu v sekci nástroje. Je nazvaná „Citovať túto stránku“.<br><br>Citace od Wikipedie pro tuto stránku je dostupná zde:<br>"},
+            {objectType: "script", object: "didYouKnowProxyServer;", En: "Did you know that <span style=" + '"display: inline; font-weight: 700"' + ">if the request is failing</span> with extraction or is just all wrong <span style=" + '"display: inline; font-weight: 700"' + ">you can try using an alternative proxy server</span> by changing settings? The request might take more time, but also it might return more successful output bypassing redirections and so on...<br><br><a href=" + '"Javascript: quickNtfySwitchFetch();"' + ">Generate using alternative proxy</a>", Cz: "Věděli jste, že <span style=" + '"display: inline; font-weight: 700"' + ">pokud požadavek selhává</span> při extrakci nebo je jeho výstup nesmyslný <span style=" + '"display: inline; font-weight: 700"' + ">můžete zkusit použít alternativní proxy server</span> změnou nastavení? Požadavek bude trvat déle, ale také by mohl vrátit úspěšnější výstup, obejít přesměrování a tak dále...<br><br><a href=" + '"Javascript: quickNtfySwitchFetch();"' + ">Vygenerovat použitím alternativní proxy</a>", De: "Wussten Sie, dass <span style=" + '"display: inline; font-weight: 700"' + ">wenn die Anfrage bei der Extraktion fehlschlägt</span> oder einfach nur falsch ist <span style=" + '"display: inline; font-weight: 700"' + ">man versuchen kann, einen alternativen Proxy-Server</span> zu verwenden, indem man die Einstellungen ändert? Die Anfrage könnte mehr Zeit in Anspruch nehmen, aber es könnte auch eine erfolgreichere Ausgabe unter Umgehung von Umleitungen und so weiter zurückgeben...<br><br><a href=" + '"Javascript: quickNtfySwitchFetch();"' + ">Generieren mit alternativem Proxy</a>", Sk: "Vedeli ste, že <span style=" + '"display: inline; font-weight: 700"' + ">pokiaľ požiadavka zlyháva</span> pri extrakcii alebo je jej výstup nezmyselný <span style=" + '"display: inline; font-weight: 700"' + ">môžete skúsiť použiť alternatívny proxy server</span> zmenou nastavenia? Požiadavka bude trvať dlhšie, ale tiež by mohla vrátiť úspešnejší výstup, obísť presmerovanie a tak ďalej...<br><br><a href=" + '"Javascript: quickNtfySwitchFetch();"' + ">Vygenerovať použitím alternatívnej proxy </a>"},
+            {objectType: "script", object: "invalidRequest;", En: "invalid request", Cz: "neplatný požadavek", De: "ungültige Anfrage", Sk: "neplatná požiadavka"},
+            {objectType: "script", object: "websiteCitation;", En: "Simple citation for website ", Cz: "Jednoduchá citace pro webovou stránku ", De: "Einfaches Zitat für Website ", Sk: "Jednoduchá citácia pre webovú stránku "},
+            {objectType: "script", object: "invalidAdress;", En: "entered adress is invalid", Cz: "zadaná adresa je neplatná", De: "eingegebene Adresse ist ungültig", Sk: "zadaná adresa je neplatná"},
+            {objectType: "script", object: "wikipediaContributors;", En: "Wikipedia contributors", Cz: "Přispěvatelé Wikipedie", De: "Wikipedia-Beiträge", Sk: "Prispievatelia Wikipédie"},
+            {objectType: "script", object: "parsingQueryError;", En: "parsing shared citation query failed", Cz: "zpracovávání odkazu na sdílenou citaci selhalo", De: "Parsen der gemeinsamen Zitierabfrage fehlgeschlagen", Sk: "spracovanie odkazu na zdieľanú citáciu zlyhalo"},
+            {objectType: "script", object: "copyNotSuccessful;", En: "copying unsuccessful", Cz: "kopírování se nezdařilo", De: "Kopieren erfolglos", Sk: "kopírovanie zlyhalo"},
+            {objectType: "script", object: "overrunServers;", En: "please don't put unnecessary strain on servers", Cz: "prosím nepřetěžujte zbytečně servery", De: "Bitte belasten Sie die Server nicht unnötig", Sk: "prosím nepreťažujte zbytočne servery"},
+            {objectType: "script", object: "linkCopyed;", En: "link copyed", Cz: "odkaz zkopírován", De: "Link kopiert", Sk: "odkaz skopírovaný"},
+            {objectType: "script", object: "button;", En: "button", Cz: "tlačítko", De: "Schaltfläche", Sk: "tlačidlo"},
+            {objectType: "script", object: "noCookies;", En: "cookies disabled - no changes will be restored in next session", Cz: "cookies zakázány - jakékoli změny se v příští relaci neobnoví", De: "Cookies deaktiviert - keine Änderungen werden in der nächsten Sitzung wiederhergestellt", Sk: "cookies zakázané - akékoľvek zmeny sa v budúcej relácii neobnovia"},
+            {objectType: "script", object: "errorCopyed;", En: "error copyed", Cz: "chyba zkopírována", De: "Fehler kopiert", Sk: "chyba skopírovaná"},
+            {objectType: "script", object: "citationCopyed;", En: "citation copyed", Cz: "citace zkopírována", De: "Zitat kopiert", Sk: "citácie skopírovaná"},
+            {objectType: "script", object: "settingsSaved;", En: "settings saved", Cz: "nastavení uloženo", De: "Gespeicherte Einstellungen", Sk: "nastavenie uložené"},
+            {objectType: "script", object: "defCitPattern;", En: "%title. %indexWeb [online]. %copyright [cited on %day.%month.%year]. Availible from: %fullUrl", Cz: "%title. %indexWeb [online]. %copyright [citováno %day.%month.%year]. Dostupné z: %fullUrl", De: "%title. %indexWeb [online]. %copyright [zitiert am %day.%month.%year]. Erhältlich unter: %fullUrl", Sk: "%title. %indexWeb [online]. %copyright [citované %day.%month.%year]. Dostupné z: %fullUrl"},
+            {objectType: "script", object: "dataErased;", En: "data erased", Cz: "data vymazána", De: "gelöschte Daten", Sk: "údaje vymazané"},
+            {objectType: "script", object: "newLinesIgnored;", En: "new lines are ignored", Cz: "nové řádky jsou ignorovány", De: "neue Zeilen werden ignoriert", Sk: "nové riadky sú ignorované"},
+            {objectType: "script", object: "ntfyServerWarn;", En: "It's important to note that ntfy server serves just for communication with custom made " + '"server"' + " (if I can even call it like that), so wait times will be usually longer.", Cz: "Nutno poznamenat že ntfy server slouží pouze jako způsob komunikace s vlastním " + '"serverem"' + " (pokud se tomu tak dá vůbec říkat) a tak bude doba čekání obvykle delší.", De: "Es ist wichtig zu beachten, dass ntfy Server nur für die Kommunikation mit maßgeschneiderten " + '"Server"' + " (wenn ich es überhaupt so nennen kann) dient, daher sind die Wartezeiten normalerweise länger.", Sk: "Treba poznamenať že ntfy server slúži iba ako spôsob komunikácie s vlastným " + '"serverom"' + " (pokiaľ sa tomu tak dá vôbec hovoriť) a tak bude doba čakania obvykle dlhšia."},
+            {objectType: "script", object: "eraseDataWarning;", En: "This action will remove all data and preferences this site saved on your device. Are you sure?", Cz: "Tato akce smaže všechna data a preference která tato stránka uložila na vašem zařízení. Jste si jisti?", De: "Durch diese Aktion werden alle Daten und Einstellungen, die diese Website auf Ihrem Gerät gespeichert hat, gelöscht. Sind Sie sicher?", Sk: "Táto akcia zmaže všetky dáta a preferencie, ktoré táto stránka uložila na vašom zariadení. Ste si istí?"},
+        ];
+
+        globalThis.cookies = navigator.cookieEnabled;
+        if (!cookies) {
+            globalThis.historyTemp = "";
+            globalThis.citPatternEdited = false;
+            globalThis.ntfyServerWarn = false;
+        }
+        globalThis.storageVersion = 1;
+        globalThis.touchscreen = matchMedia("(pointer: coarse)").matches;
+        globalThis.NtfySwitchFetch = false;
+        globalThis.loadingPart = 0;
+        globalThis.shift = false;
+        globalThis.configMenuOpened = false;
+        globalThis.editingCitation = false;
+        globalThis.iconRotated = 0;
+        globalThis.generating = false;
+        globalThis.infoToExtract = ["title", "copyright", "authorOnly", "icon", "wikiCitation"];
+        globalThis.allCitationVariables = ["title", "copyright", "indexWeb", "fullUrl", "web", "givenUrl", "day", "month", "year", "authorOnly"];
+        globalThis.fetchSpamCounter = 0;
+        globalThis.requestSuccessful = true;
+        globalThis.responseThrottling = false;
+        globalThis.loadingAnimInterval = null;
+        globalThis.activeWindow = null;
+        globalThis.validUrlInput = false;
+        globalThis.firstCitationPatternWindow = true;
+        globalThis.urlInputPlaceholders = ["www.dejepis.com/...", "cs.wikipedia.org/...", "www.atlaso.cz/...", "developer.mozilla.org/...", "chemequations.com/...", "www.converter.cz/...", "edu.techmania.cz/...", "www.battlefields.org/...", "www.historynet.com/...", "animaldiversity.org/...", "www.techarena.cz/...", "www.svetandroida.cz/...", "www.khanacademy.org/...", "blog.esper.io/..."];
+        document.getElementById("urlInput").placeholder = urlInputPlaceholders[randomNum(0, urlInputPlaceholders.length-1)];
+
+        if (cookies) {
+            if (localStorage.getItem("firstVisit") == null) {
+                resetSettings(false);
+            }
+        }
+        checkUrlInput();
+
+        if (cookies) {
+            if (localStorage.getItem("storageVersion")*1 < storageVersion) {
+                updateStorage();
+            }
+        }
+
+        if (touchscreen) {
+            cssVariables.style.setProperty('--scrollbarWidth', "3px");
+            cssVariables.style.setProperty('--scrollbarThumbColor', "rgb(237, 149, 49)");
+        }
+
+        if (!touchscreen) {
+            document.getElementById("urlInput").focus();
+        }
+        if (!cookies) {
+            setLanguage("Auto");
+        }
+        loadConfig(true);
+        applyConfig();
+
+        // processing url parameters
+        var parameters = new URLSearchParams(window.location.search);
+
+        if (parameters.has("q")) {
+            var query = parameters.get("q");
+            try {
+                document.getElementById("urlInput").value = decodeURIComponent(query);
+                validUrlInput = true;
+                checkUrlInput();
+                getSource(); 
+            } catch (error) {
+                console.error("error decoding uri");
+                console.error(error);
+                popUp(langParsingQueryError, 3000, "error");
+            }
+        }
+
+        setTimeout(checkUrlInput, 500);
+
+        addEventListener("resize", function() {
+            updateOutputHeight();
+        });
+
+        addEventListener("languagechange", function() {
+            if (optionLanguage == "Auto") {
+                setLanguage("Auto");
+            }
+        });
+
+        var buttonTitleLongPressed = "";
+        const buttons = document.getElementsByTagName("button");
+        for (var loop of buttons) {
+            if (touchscreen) {
+                var clickStart = "touchstart";
+                var clickEnd = "touchend";
+            } else {
+                var clickStart = "mousedown";
+                var clickEnd = "mouseup";
+            }
+            loop.addEventListener(clickStart, function() {
+                globalThis.buttonLongPressTimeout = setTimeout(function() {
+                    try {
+                        popUp(langButton + ": " + buttonTitleLongPressed, 3000, "info");
+                    } catch (error) {
+                        console.error("dislplay accessibility button title hint failed");
+                        console.error(error);
+                    }
+                    buttonTitleLongPressed = "";
+                }, 500);
+                buttonTitleLongPressed = this.title;
+            });
+            loop.addEventListener(clickEnd, function() {
+                if (buttonTitleLongPressed != "") {
+                    clearTimeout(buttonLongPressTimeout);
+                }
+            });
+            if (touchscreen) {
+                loop.addEventListener("touchmove", function() {
+                    if (buttonTitleLongPressed != "") {
+                        clearTimeout(buttonLongPressTimeout);
+                    }
+                });
+            }
+        }
+
+        if (touchscreen) {
+            var inputFields = Array.from(document.getElementsByTagName("input"));
+            inputFields = inputFields.concat(Array.from(document.getElementsByTagName("textarea")));
+            for (var [index, loop] of inputFields.entries()) {
+                if (loop === document.getElementById("copyHelper")) {
+                    inputFields.splice(index, 1);
+                }
+            }
+            for (var loop of inputFields) {
+                console.log("fab hide assigned for " + loop.id);
+                loop.addEventListener("blur", function() {
+                    hideMenu(false);
+                });
+                loop.addEventListener("focus", function() {
+                    hideMenu(true);
+                });
+            }
+        }
+
+        matchMedia('(prefers-color-scheme: dark)').addEventListener("change", function() {
+            if (optionTheme == "Auto") {
+                setTheme("Auto");
+            }
+        });
+
+        setTimeout(function() {
+            pageLoading = false;
+            document.getElementById("body").style.overflowY = "auto";
+            document.getElementById("splashScreen").style.opacity = 0;
+            setTimeout(function() {
+                document.getElementById("splashScreen").style.display = "none";
+                if (!cookies) {
+                    popUp(langNoCookies, 4000, "error");
+                }
+                console.log("started");
+            }, 160);
+        }, 50);
+        
+    } catch (error) {
+        if (navigator.language.includes("cs")) {
+            var eraseDataTextSplash = "vymazat data";
+            var wentWrongText = "Ale ne! Něco se nepovedlo. Vymazání dat by mohlo pomoct.";
+            globalThis.langEraseDataWarning = "Tato akce smaže všechna data a preference která tato stránka uložila na vašem zařízení. Jste si jisti?";
+        } else if (navigator.language.includes("de")) {
+            var eraseDataTextSplash = "Daten löschen";
+            var wentWrongText = "Oh, nein! Etwas ist schief gelaufen. Die Löschung der Daten könnte helfen.";
+            globalThis.langEraseDataWarning = "Durch diese Aktion werden alle Daten und Einstellungen, die diese Website auf Ihrem Gerät gespeichert hat, gelöscht. Sind Sie sicher?";
+        } else if (navigator.language.includes("sk")) {
+            var eraseDataTextSplash = "vymazať údaje";
+            var wentWrongText = "Ale nie! Niečo sa pokazilo. Vymazanie údajov by mohlo pomôcť.";
+            globalThis.langEraseDataWarning = "Táto akcia odstráni všetky údaje a predvoľby, ktoré táto stránka uložila vo vašom zariadení. Ste si istý?";
+        } else {
+            var eraseDataTextSplash = "erase data";
+            var wentWrongText = "Oh no! Something went wrong. Erasing data might help.";
+            globalThis.langEraseDataWarning = "This action will remove all data and preferences this site saved on your device. Are you sure?";
+        }
+        react("eraseDataTextSplash", eraseDataTextSplash);
+        react("wentWrongText", wentWrongText);
+        document.getElementById("startError").style.display = "block";
+        console.error(error);
+    }
+
+}
+
+function quickNtfySwitchFetch() {
+    optionsSelector('Proxy', 'Ntfy', 'Button');
+    document.getElementById("urlInput").value = givenUrl;
+    validUrlInput = true;
+    getSource();
+    NtfySwitchFetch = true;
+}
+
+function checkUrlInput() {
+
+    var confirm = document.getElementById("confirm");
+    var urlInput = document.getElementById("urlInput");
+    if(/.{1,}\..{1,}/m.test(urlInput.value)) {
+        validUrlInput = true;
+        confirm.style.opacity = 1;
+        confirm.style.cursor = "pointer";
+    } else {
+        validUrlInput = false;
+        confirm.style.opacity = 0.5;
+        confirm.style.cursor = "not-allowed";
+    }
+
+}
+
+function randomNum(bottomIndex, topIndex) {
+    var rand = Math.round((Math.random()*(topIndex+1-bottomIndex))+(bottomIndex-0.5))*1;
+    if (rand == -0) {
+        rand = 0;
+    }
+    return rand;
+}
+
+function clearUrlInput() {
+    document.getElementById('urlInput').value = ('');
+    checkUrlInput();
+}
+
+function popUp(text, length, type, close) {
+    if (typeof close == "undefined") {
+        if (type == "info") {
+            document.getElementById("popUp").style.color = "var(--textAccent)";
+            document.getElementById("popUp").style.backgroundColor = "var(--textBackAccent)";
+            document.getElementById("popUp").style.borderBottom = "3px solid var(--textAccent)";
+        } else if (type == "error") {
+            document.getElementById("popUp").style.color = "var(--errorAccent)";
+            document.getElementById("popUp").style.backgroundColor = "var(--errorBackAccent)";
+            document.getElementById("popUp").style.borderBottom = "3px solid var(--errorAccent)";
+        }
+        document.getElementById("popUpContent").innerText = text;
+        document.getElementById("popUp").style.top = 0;
+        if (typeof popUpTimeout != "undefined") {
+            clearTimeout(popUpTimeout);
+        }
+        popUpTimeout = setTimeout(function() {
+            document.getElementById("popUp").style.top = "-" + (document.getElementById("popUp").getBoundingClientRect().height+5) + "px";
+        }, length)
+    } else if (close) {
+        clearTimeout(popUpTimeout);
+        document.getElementById("popUp").style.top = "-" + (document.getElementById("popUp").getBoundingClientRect().height+5) + "px";
+    }
+}
+
+function hideMenu(hide) {
+
+    if (touchscreen) {
+        if (hide) {
+            document.getElementById("configRotateContainer").style.bottom = "-95px";
+        } else {
+            document.getElementById("configRotateContainer").style.bottom = "35px";
+        }
+    }
+
+}
+
+function openOptions(options, open, closedUponReset) {
+
+    if (open) {
+        if (options == "history") {
+            loadHistory();
+        }
+        globalThis.uiContent = document.getElementById(options + "Content").style;
+        globalThis.uiWindow = document.getElementById("window").style;
+        globalThis.uiIcon = document.getElementById(options + "Svg").style;
+
+        document.getElementById("body").style.overflowY = "hidden";
+        uiWindow.bottom = (window.innerHeight - document.getElementById(options).getBoundingClientRect().bottom - 1) + "px";
+        uiWindow.right = (window.innerWidth - document.getElementById(options).getBoundingClientRect().right - 1) + "px";
+        document.getElementById("body").style.overflowY = "auto";
+        
+        uiIcon.display = "block";
+        uiWindow.display = "flex";
+        document.getElementById("closeSvg").style.opacity = 0;
+        setTimeout(function() {
+            uiIcon.opacity = 0;
+            uiIcon.transform = "scale(3)";
+            uiWindow.backgroundColor = "var(--backgroundAccent)";
+            uiWindow.borderWidth = 0;
+            uiWindow.right = 0;
+            uiWindow.bottom = 0;
+            uiWindow.width = "100%";
+            uiWindow.height = "100%";
+            setTimeout(function() {
+                activeWindow = options;
+                document.getElementById("body").style.overflowY = "hidden";
+                document.getElementById("closeSvg").style.display = "none";
+                uiIcon.display = "none";
+                setTimeout(function() {
+                    document.getElementById("checkSvg").style.display = "block";
+                    uiContent.display = "block";
+                    if (options == "citationPattern" && firstCitationPatternWindow) {
+                        firstCitationPatternWindow = false;
+                        var cpInput = document.getElementById("optionCitationPatternInput");
+                        cpInput.style.height = (cpInput.scrollHeight) + "px";
+                    }
+                    setTimeout(function() {
+                        document.getElementById("checkSvg").style.opacity = 1;
+                        uiContent.opacity = 1;
+                    }, 30);
+                }, 30);
+            }, 310);
+        }, 30);
+    } else if (typeof uiWindow != "undefined") {
+        if (uiWindow.display == "flex" && !closedUponReset) {
+            updateOutputHeight();
+            if (cookies) {
+                saveConfig();
+                if (activeWindow != "history") {
+                    popUp(langSettingsSaved, 2500, "info");
+                }
+            } else {
+                if (activeWindow != "history") {
+                    // popUp(langSettingsSavedNo, 3000, "error");
+                }
+            }
+            loadConfig();
+        } else if (closedUponReset) {
+            popUp(langDataErased, 2500, "info");
+        }
+        uiWindow.display = "none";
+        uiIcon.display = "none";
+        uiContent.display = "none";
+        uiContent.opacity = 0;
+        uiWindow.width = "54px";
+        uiWindow.height = "54px";
+        uiWindow.borderWidth = "3px";
+        uiWindow.backgroundColor = "var(--buttonBackAccent)";
+        uiIcon.transform = "scale(1)";
+        uiIcon.opacity = 1;
+        activeWindow = null;
+    }
+}
+
+function forceCitation(website, fromHistory) {
+    if (fromHistory) {
+        configMenu();
+    }
+    document.getElementById("urlInput").value = website;
+    checkUrlInput();
+    getSource();
+}
+
+function copyText(text, focusBack) {
+    var element = document.getElementById("copyHelper");
+    element.style.display = "block";
+    element.value = (text);
+    element.focus();
+    element.select();
+    try {
+        navigator.clipboard.writeText(element.value);
+    } catch (error) {
+        try {
+            console.warn("default copy method failed, trying execCommand");
+            document.execCommand("copy");
+        } catch (error) {
+            console.warn("fallback copying method failed")
+            popUp(langCopyNotSuccessful, 2500, "error");
+        }
+    }
+    element.blur();
+    element.style.display = "none";
+    if (focusBack != undefined) {
+        document.getElementById(focusBack).focus();
+    }
+}
+
+function shareCitation() {
+    if (window.location.href.includes("?")) {
+        var baseURL = (window.location.href.split("?"))[0];
+    } else {
+        var baseURL = window.location.href;
+    }
+    var shareUrl = baseURL + "?q=" + encodeURIComponent(web);
+    copyText(shareUrl, "shareCitation");
+    popUp(langLinkCopyed, 2500, "info");
+    var shareData = {
+        url: shareUrl,
+        title: langWebsiteCitation + fullUrl,
+        text: clearCitation,
+    }
+    if (navigator.canShare(shareData)) {
+        try {
+            navigator.share(shareData);
+        } catch (error) {
+            console.error("navigator.share method failed");
+            console.error(error);
+        }
+    } else {
+        console.log("can't share text");
+    }
+}
+
+function editCitation() {
+    if (!editingCitation) {
+        editingCitation = true;
+        document.getElementById("hr-editCitation").style.display  = "block";
+        document.getElementById("editCitationArea").style.display  = "flex";
+        document.getElementById("editCitationArea").scrollIntoView({ behavior: 'smooth'});
+    } else {
+        editingCitation = false;
+        document.getElementById("hr-editCitation").style.display  = "none";
+        document.getElementById("editCitationArea").style.display  = "none";
+    }
+    updateOutputHeight();
+}
+
+function react(elementId, content) {
+    document.getElementById(elementId).innerHTML = content;
+}
+
+function setLanguage(language) {
+
+    if (language == "Auto") {
+        if (navigator.language.includes("en")) {
+            language = "En";
+        } else if (navigator.language.includes("cs")) {
+            language = "Cz";
+        } else if (navigator.language.includes("de")) {
+            language = "De";
+        } else if (navigator.language.includes("sk")) {
+            language = "Sk";
+        } else {
+            language = "En";
+        }
+    }
+
+    if (language == "Cz") {
+        document.title = "Citátor - jednoduché citace webových stránek";
+    } else if (language == "En") {
+        document.title = "Citator - simple website citations";
+    } else if (language == "De") {
+        document.title = "Citator - einfache Website-Zitate";
+    } else if (language == "Sk") {
+        document.title = "Citator - jednoduché citácie webových stránok";
+    }
+
+    for (var loop of localization) {
+        var translation = eval("loop." + language);
+        if (loop.objectType == "script") {
+            eval("globalThis.lang" + loop.object.substring(0,1).toUpperCase() + loop.object.substring(1,loop.object.length-1) + " = translation");
+        } else {
+            var objects = loop.object.split(";");
+            for (objectLoop = 0; objectLoop < objects.length-1; objectLoop++) {
+                document.getElementById(objects[objectLoop])[loop.objectType] = translation;
+            }
+        }
+    }
+
+    if (cookies) {
+        if (localStorage.getItem("citPatternEdited") != "true") {
+            optionCitationPattern = langDefCitPattern;
+            citationPattern = optionCitationPattern;
+        }
+    }
+    
+}
+
+function saveHistory() {
+    if (cookies) {
+        var history = localStorage.getItem("history");
+    } else {
+        var history = historyTemp;
+    }
+    if (history.split("|1|").length > 30) {
+        history = history.replace(/((?:(?:\n|.).*?)\|1\|)/m, "");
+    }
+    var date = new Date;
+    var minute = date.getMinutes();
+    if (minute*1 < 10) {
+        minute = "0" + minute;
+    }
+    if (cookies) {
+        localStorage.setItem("history", history + icon + "|2|" + fullUrl + "|2|" + date.getDate() + "." + (date.getMonth()*1+1) + "." + date.getFullYear() + " - " + date.getHours() + ":" + minute + "|2|" + clearCitation + "|2||1|");
+    } else {
+        historyTemp = history + icon + "|2|" + fullUrl + "|2|" + date.getDate() + "." + (date.getMonth()*1+1) + "." + date.getFullYear() + " - " + date.getHours() + ":" + minute + "|2|" + clearCitation + "|2||1|";
+    }
+}
+
+function loadHistory() {
+    if (cookies) {
+        var history = localStorage.getItem("history");
+    } else {
+        var history = historyTemp;
+    }
+    var innerHistory = "";
+    var historyCitations = history.split("|1|");
+    var webIcon = "";
+    var webLink = "";
+    var webCitation = "";
+    for (loop1 = historyCitations.length-2; loop1 >= 0; loop1--) {
+        historyCitationParts = historyCitations[loop1].split("|2|");
+        if (historyCitationParts[0] != "") {
+            webIcon = '<img src="' + historyCitationParts[0] + '" class="historyWebImg">';
+        } else {
+            webIcon = '<svg class="historyWebImg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill=var(--linkAccent)><path d="M0 0h24v24H0V0z" fill="none"/><path d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zm6.93 6h-2.95c-.32-1.25-.78-2.45-1.38-3.56 1.84.63 3.37 1.91 4.33 3.56zM12 4.04c.83 1.2 1.48 2.53 1.91 3.96h-3.82c.43-1.43 1.08-2.76 1.91-3.96zM4.26 14C4.1 13.36 4 12.69 4 12s.1-1.36.26-2h3.38c-.08.66-.14 1.32-.14 2s.06 1.34.14 2H4.26zm.82 2h2.95c.32 1.25.78 2.45 1.38 3.56-1.84-.63-3.37-1.9-4.33-3.56zm2.95-8H5.08c.96-1.66 2.49-2.93 4.33-3.56C8.81 5.55 8.35 6.75 8.03 8zM12 19.96c-.83-1.2-1.48-2.53-1.91-3.96h3.82c-.43 1.43-1.08 2.76-1.91 3.96zM14.34 14H9.66c-.09-.66-.16-1.32-.16-2s.07-1.35.16-2h4.68c.09.65.16 1.32.16 2s-.07 1.34-.16 2zm.25 5.56c.6-1.11 1.06-2.31 1.38-3.56h2.95c-.96 1.65-2.49 2.93-4.33 3.56zM16.36 14c.08-.66.14-1.32.14-2s-.06-1.34-.14-2h3.38c.16.64.26 1.31.26 2s-.1 1.36-.26 2h-3.38z"/></svg>';
+        }
+        webLink = historyCitationParts[1];
+        citDate = historyCitationParts[2];
+        webCitation = historyCitationParts[3];
+        innerHistory = innerHistory + '<div class="historyCitationContainer" role="button" onclick="forceCitation(' + "'" + webLink + "'" + ', true);"><div class="historyLink">' + webIcon + '<a class="historyUrl" href="' + webLink + '" target="a_blank">' + webLink + '</a></div><div class="historyDate">' + citDate + '</div><div class="historyCitation">' + webCitation + '</div></div><div class="hr-accent"></div>';
+    }
+    if (innerHistory != "") {
+        document.getElementById("nothingIsHere").style.display = "none";
+    } else {
+        document.getElementById("nothingIsHere").style.display = "block";
+    }
+    document.getElementById("innerHistory").innerHTML = innerHistory;
+}
+
+function updateStorage() {
+
+    var version = localStorage.getItem("storageVersion")*1
+
+    if (version < 1) {
+        localStorage.setItem("citationPattern", localStorage.getItem("citationPattern").replaceAll("%universalCopyright", "%authorOnly"));
+    }
+
+    localStorage.setItem("storageVersion", storageVersion);
+
+}
+
+function resetSettings(user, reload) {
+    if (!user) {
+        var allow = true;
+    } else if (confirm(langEraseDataWarning)) {
+        var allow = true;
+    } else {
+        var allow = false;
+    }
+    if (allow) {
+        localStorage.clear();
+        if (!user) {
+            document.getElementById("moreOptions").style.display = "flex";
+            moreOptionsShowing = true;
+        } else if (reload == undefined || !reload || typeof reload == "undefined") {
+            configMenu(true);
+
+            optionsSelector("Theme", "Auto", "Button");
+            optionsSelector("Font", "Mono", "Button");
+            optionsSelector("Language", "Auto", "Button");
+            optionsSelector("Proxy", "Codetabs", "Button");
+        }
+        localStorage.setItem("storageVersion", storageVersion);
+        localStorage.setItem("history", "");
+        localStorage.setItem("firstVisit", false);
+        localStorage.setItem("citationPattern", "%title. %indexWeb [online]. %copyright [cited %day.%month.%year]. Availible from: %fullUrl");
+        localStorage.setItem("optionTheme", "Auto");
+        localStorage.setItem("optionFont", "Mono");
+        localStorage.setItem("optionEditButton", true);
+        localStorage.setItem("optionShareButton", true);
+        localStorage.setItem("optionLanguage", "Auto");
+        localStorage.setItem("optionProxy", "Codetabs");
+        localStorage.setItem("optionDidYouKnowHint", true);
+        if (reload == undefined || !reload || typeof reload == "undefined") {
+            loadConfig();
+            applyConfig();
+        }
+        if (reload) {
+            location.reload();
+        }
+    }
+}
+
+// https://stackoverflow.com/questions/454202/creating-a-textarea-with-auto-resize
+const tx = document.getElementsByTagName("textarea");
+for (let i = 0; i < tx.length; i++) {
+  tx[i].style.height = (tx[i].scrollHeight) + "px";
+  tx[i].addEventListener("input", OnInput, false);
+}
+
+function OnInput() {
+  this.style.height = "auto";
+  this.style.height = (this.scrollHeight) + "px";
+}
+
+function setLoadingBar(part) {
+    loadingPart = part;
+    if (document.getElementById("loadingBar").style.opacity == 0) {
+        document.getElementById("loadingBar").style.opacity = 1;
+    }
+    document.getElementById("loadingBar").style.width = part + "%";
+    if (part == 100) {
+        setTimeout(function() {
+            document.getElementById("loadingBar").style.opacity = 0;
+            setTimeout(function() {
+                document.getElementById("loadingBar").style.width = "0%";
+                loadingPart = 0;
+            }, 150);
+        }, 300);
+    }
+}
+
+function optionsSelector(option, value, type) {
+
+    if (cookies) {
+        if (option == "Proxy" && value == "Ntfy" && localStorage.getItem("ntfyServerWarn") == null) {
+            localStorage.setItem("ntfyServerWarn", true);
+            alert(langNtfyServerWarn);
+        }
+    } else {
+        if (option == "Proxy" && value == "Ntfy" && !ntfyServerWarn) {
+            ntfyServerWarn = true;
+            alert(langNtfyServerWarn);
+        }
+    }
+
+    if (type == "Button") {
+        document.getElementById("option" + option + eval("option" + option)).style.backgroundColor = "var(--buttonBackAccent)";
+        document.getElementById("option" + option + eval("option" + option)).style.color = "var(--buttonAccent)";
+    } else if (type == "Checkbox") {
+        value = getOpossite(eval("option" + option));
+    }
+
+    console.log(option + " before: " + eval("typeof option" + option) + " " + eval("option" + option));
+    if (type == "Button" || type == "Input") {
+        if (cookies) {
+            if (type == "Input" && localStorage.getItem("citPatternEdited") == null) {
+                localStorage.setItem("citPatternEdited", true);
+                console.log("citation pattern edited once");
+            }
+        } else {
+            if (type == "Input" && !citPatternEdited) {
+                citPatternEdited= true;
+                console.log("citation pattern edited once");
+            }
+        }
+        if (type == "Input" && /(?:\n|\r)/m.test(value)) {
+            popUp(langNewLinesIgnored, 2500, "info");
+            value = value.replace(/(?:\n|\r)/gm, "");
+        }
+        eval("option" + option + " = '" + value + "'");
+    } else if (type == "Checkbox") {
+        eval("option" + option + " = " + value);
+    }
+    console.log(option + " after: " + eval("typeof option" + option) + " " + eval("option" + option));
+
+    if (type == "Button") {
+        document.getElementById("option" + option + value).style.backgroundColor = "var(--buttonAccent)";
+        document.getElementById("option" + option + value).style.color = "var(--buttonBackAccent)";
+    } else if (type == "Checkbox") {
+        if (eval("option" + option)) {
+            document.getElementById("check" + option).style.transform = "scaleY(1)";
+        } else {
+            document.getElementById("check" + option).style.transform = "scaleY(0)";
+        }
+    }
+    applyConfig();
+}
+
+function saveConfig() {
+    localStorage.setItem("optionTheme", optionTheme);
+    localStorage.setItem("optionFont", optionFont);
+    localStorage.setItem("optionEditButton", optionEditButton);
+    localStorage.setItem("optionShareButton", optionShareButton);
+    localStorage.setItem("optionDidYouKnowHint", optionDidYouKnowHint);
+    localStorage.setItem("optionLanguage", optionLanguage);
+    localStorage.setItem("optionProxy", optionProxy);
+
+    if (localStorage.getItem("citPatternEdited") == "true") {
+        localStorage.setItem("citationPattern", optionCitationPattern);
+    } else {
+        localStorage.setItem("citationPattern", langDefCitPattern);
+    }
+}
+
+function loadConfig(firstLoad) {
+    if (cookies) {
+        globalThis.optionTheme = localStorage.getItem("optionTheme");
+        globalThis.optionFont = localStorage.getItem("optionFont");
+        globalThis.optionEditButton = toBoolean(localStorage.getItem("optionEditButton"));
+        globalThis.optionShareButton = toBoolean(localStorage.getItem("optionShareButton"));
+        globalThis.optionDidYouKnowHint = toBoolean(localStorage.getItem("optionDidYouKnowHint"));
+        globalThis.optionLanguage = localStorage.getItem("optionLanguage");
+        globalThis.optionCitationPattern = localStorage.getItem("citationPattern");
+        globalThis.citationPattern = optionCitationPattern;
+        globalThis.optionProxy = localStorage.getItem("optionProxy");
+    } else if (firstLoad) {
+        globalThis.optionTheme = "Auto";
+        globalThis.optionFont = "Mono";
+        globalThis.optionEditButton = false;
+        globalThis.optionShareButton = true;
+        globalThis.optionDidYouKnowHint = true;
+        globalThis.optionLanguage = "Auto";
+        globalThis.optionCitationPattern = langDefCitPattern;
+        globalThis.optionProxy = "Codetabs";
+    }
+
+    if (!cookies) {
+        if (!citPatternEdited) {
+            globalThis.optionCitationPattern = langDefCitPattern;
+        }
+        citationPattern = optionCitationPattern;
+    }
+
+    document.getElementById("optionTheme" + optionTheme).style.backgroundColor = "var(--buttonAccent)";
+    document.getElementById("optionTheme" + optionTheme).style.color = "var(--buttonBackAccent)";
+    document.getElementById("optionFont" + optionFont).style.backgroundColor = "var(--buttonAccent)";
+    document.getElementById("optionFont" + optionFont).style.color = "var(--buttonBackAccent)";
+    document.getElementById("optionLanguage" + optionLanguage).style.backgroundColor = "var(--buttonAccent)";
+    document.getElementById("optionLanguage" + optionLanguage).style.color = "var(--buttonBackAccent)";
+    document.getElementById("optionCitationPatternInput").value = optionCitationPattern;
+    document.getElementById("optionProxy" + optionProxy).style.backgroundColor = "var(--buttonAccent)";
+    document.getElementById("optionProxy" + optionProxy).style.color = "var(--buttonBackAccent)";
+    
+    if (!optionEditButton) {
+        document.getElementById("checkEditButton").style.transform = "scaleY(0)";
+    }
+    if (!optionShareButton) {
+        document.getElementById("checkShareButton").style.transform = "scaleY(0)";
+    }
+    if (!optionDidYouKnowHint) {
+        document.getElementById("checkDidYouKnowHint").style.transform = "scaleY(0)";
+    }
+}
+
+function applyConfig() {
+
+    setLanguage(optionLanguage);
+
+    setTheme(optionTheme)
+
+    if (optionFont == "Mono") {
+        document.getElementById("body").style.fontFamily = "'Roboto Mono', 'Roboto', Arial";
+    } else {
+        document.getElementById("body").style.fontFamily = "'Roboto', 'Roboto Mono', Arial";
+    }
+
+    if (optionEditButton) {
+        document.getElementById("editCitation").style.display = "inline-flex";
+    } else {
+        document.getElementById("editCitation").style.display = "none";
+    }
+
+    if (optionShareButton) {
+        document.getElementById("shareCitation").style.display = "inline-flex";
+    } else {
+        document.getElementById("shareCitation").style.display = "none";
+    }
+
+    updateOutputHeight();
+
+}
+
+function setTheme(optionTheme) {
+
+    var theme = "Dark";
+    if (optionTheme == "Auto") {
+        if (matchMedia) {
+            if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+                theme = "Dark";
+            } else {
+                theme = "Light";
+            }
+        }
+    } else {
+        theme = optionTheme;
+    }
+
+    if (theme == "Dark") {
+        document.getElementById("dimmer").style.backgroundColor = "rgba(0, 0, 0, 0.65)";
+        cssVariables.style.setProperty('--backgroundAccent', "black");
+        cssVariables.style.setProperty('--textAccent', "rgb(120, 180, 65)");
+        cssVariables.style.setProperty('--textBackAccent', "rgb(0, 25, 0)");
+        cssVariables.style.setProperty('--buttonAccent', "rgb(237, 149, 49)");
+        cssVariables.style.setProperty('--buttonBackAccent', "rgb(34, 26, 15)");
+        cssVariables.style.setProperty('--errorAccent', "rgb(245, 80, 100)");
+        cssVariables.style.setProperty('--errorBackAccent', "rgb(25, 0, 0)");
+        cssVariables.style.setProperty('--inputAccent', "rgb(60, 140, 255)");
+        cssVariables.style.setProperty('--inputBackAccent', "rgb(0, 0, 25)");
+        cssVariables.style.setProperty('--linkAccent', "rgb(145, 95, 255)");
+        if (touchscreen) {
+            cssVariables.style.setProperty('--scrollbarThumbColor', "rgb(237, 149, 49)");
+        } else {
+            cssVariables.style.setProperty('--scrollbarThumbColor', "rgb(34, 26, 15)");
+        }
+    } else {
+        document.getElementById("dimmer").style.backgroundColor = "rgba(255, 255, 255, 0.65)";
+        cssVariables.style.setProperty('--backgroundAccent', "white");
+        cssVariables.style.setProperty('--textAccent', "rgb(30, 110, 30)");
+        cssVariables.style.setProperty('--textBackAccent', "rgb(220, 250, 180)");
+        cssVariables.style.setProperty('--buttonAccent', "rgb(34, 26, 15)");
+        cssVariables.style.setProperty('--buttonBackAccent', "rgb(250, 185, 90)");
+        cssVariables.style.setProperty('--errorAccent', "rgb(180, 68, 66)");
+        cssVariables.style.setProperty('--errorBackAccent', "rgb(245, 200, 200)");
+        cssVariables.style.setProperty('--inputAccent', "rgb(30, 60, 140)");
+        cssVariables.style.setProperty('--inputBackAccent', "rgb(190, 220, 250)");
+        cssVariables.style.setProperty('--linkAccent', "rgb(70, 30, 100)");
+        if (touchscreen) {
+            cssVariables.style.setProperty('--scrollbarThumbColor', "rgb(34, 26, 15)");
+        } else {
+            cssVariables.style.setProperty('--scrollbarThumbColor', "rgb(237, 149, 49)");
+        }
+    }
+
+}
+
+function toBoolean(value) {
+
+    if (value == 1 || value == "true") {
+        value = true;
+    } else {
+        value = false;
+    }
+    return value;
+
+}
+
+function getOpossite(value) {
+
+    original = value;
+    if (typeof value == "number") {
+        value = value*(-1);
+    } else if (typeof value == "boolean") {
+        if (value) {
+            value = false;
+        } else {
+            value = true;
+        }
+    }
+    console.log("opossited " + typeof original + " " + original + " to " + typeof value +  " " + value);
+    return value;
+
+}
+
+function copyCitation() {
+
+    copyText(clearCitation, "copyCitation");
+    if (requestSuccessful) {
+        popUp(langCitationCopyed, 2500, "info");
+    } else {
+        popUp(langErrorCopyed, 2500, "info");
+    }
+
+}
+
+function openManualInput() {
+    document.getElementById("openManualInput").style.display = "none";
+    document.getElementById("hr-missing2").style.display = "block";
+    document.getElementById("addMissingContent").style.display = "flex";
+    updateOutputHeight();
+}
+
+function animateLoading() {
+
+    iconRotated = iconRotated + 1;
+    // console.log("animating icon " + iconRotated + " turn");
+    document.getElementById("loadingIcon").style.transform = "rotate(-" + iconRotated + "turn)";
+
+}
+
+function isEncoded(uri) {
+
+    return decodeURI(uri) != uri;
+    
+}
+
+function getSource() {
+
+    if (validUrlInput) {
+
+        if (document.activeElement.id != "confirm") {
+            document.getElementById("urlInput").blur();
+        }
+
+        if (typeof spamTimeout != "undefined") {
+            clearTimeout(spamTimeout);
+        }
+        var spamTimeout = setTimeout(function() {
+            fetchSpamCounter = 0;
+        }, 4000);
+        fetchSpamCounter = fetchSpamCounter + 1;
+        console.log("spam: " + fetchSpamCounter);
+
+        if (fetchSpamCounter < 3) {
+            generating = true;
+            document.getElementById("outputAnimator").style.opacity = 0;
+            document.getElementById("outputAnimator").style.pointerEvents = "none";
+
+            if (loadingAnimInterval == null) {
+                animateLoading();
+                loadingAnimInterval = setInterval(animateLoading, 550);
+                console.log("loadingAnimIntervalId before: " + loadingAnimInterval);
+            }
+
+            // creating and extracting url types
+            globalThis.givenUrl = document.getElementById("urlInput").value;
+            if (!isEncoded(givenUrl)) {
+                globalThis.givenUrl = encodeURI(givenUrl);
+            }
+            console.log("given url: " + givenUrl);
+            globalThis.web = givenUrl.replace(/^(?:.?){0,10}\:\/\//mi, "");
+            console.log("web: " + web);
+            globalThis.indexWeb = web.match(/^(.*?)(?:\/|$)/m)[1];
+            console.log("index web: " + indexWeb);
+            if (/^(.*?)\:\/\//m.test(givenUrl)) {
+                globalThis.protocol = givenUrl.match(/^(.*?)\:\/\//m)[1];
+            } else {
+                globalThis.protocol = "http";
+            }
+            console.log("protocol: " + protocol);
+            globalThis.indexUrl = protocol + "://" + indexWeb;
+            console.log("index url: " + indexUrl);
+            globalThis.fullUrl = protocol + "://" + web;
+            console.log("full url: " + fullUrl);
+
+            setLoadingBar(10);
+
+            if (optionProxy == "Codetabs") {
+
+                setTimeout(function() {
+                    if (loadingPart < 30 && loadingPart != 0) {
+                        setLoadingBar(30);
+                    }
+                }, 1500);
+
+                var fetchUrl = 'https://api.codetabs.com/v1/proxy?quest=' + web;
+                console.log("fetching: " + fetchUrl);
+                fetch(fetchUrl, {
+                method: 'GET',
+                })
+                .then((resp) => resp.text())
+                .then(function(response) {
+
+                    if (!responseThrottling) {
+                        setLoadingBar(80);
+                        processResponse(response);
+                    }
+
+                    responseThrottling = true;
+                    setTimeout(function() {
+                        responseThrottling = false;
+                    }, 50);
+
+                });
+            } else if (optionProxy == "Ntfy") {
+
+                var fetchUrl = "https://ntfy.sh/citatorproxyconnection" + randomNum(1, 3);
+                console.log("fetching: " + fetchUrl);
+                fetch(fetchUrl, {
+                    method: 'POST',
+                    body: web,
+                })
+                .then((resp) => resp.text())
+                .then(function(response) {
+
+                    var requestId = response.match(/"id"\:"(.*?)"/m)[1];
+                    console.log("ntfy request id: " + requestId);
+
+                    setLoadingBar(25);
+
+                    var ntfyCheck = 0;
+                    var checkResponseInterval = setInterval(function() {
+
+                        ntfyCheck = ntfyCheck + 1;
+
+                        if (ntfyCheck < 6) {
+
+                            fetch(fetchUrl + "/json?poll=1", {
+                                method: 'GET',
+                            })
+                            .then((resp) => resp.text())
+                            .then(function(response) {
+
+                                var fileUrlRegex = new RegExp('{.*?"tags":\\["' + requestId + '"\\].*?"url":"(.*?)"', 'm');
+                                var fileUrl = response.match(fileUrlRegex);
+                                if (!responseThrottling && fileUrl != null) {
+
+                                    clearInterval(checkResponseInterval);
+                                    fileUrl = fileUrl[1];
+                                    console.log("found code url: " + fileUrl);
+                                    console.log("took " + ntfyCheck + " ntfy fetche(s)");
+
+                                    setLoadingBar(70);
+
+                                    fetch(fileUrl, {
+                                        method: 'GET',
+                                    })
+                                    .then((resp) => resp.text())
+                                    .then(function(response) {
+
+                                        setLoadingBar(90);
+                                        processResponse(response);
+
+                                    });
+                                }
+
+                                responseThrottling = true;
+                                setTimeout(function() {
+                                    responseThrottling = false;
+                                }, 50);
+
+                            });
+
+                        } else {
+                            clearInterval(checkResponseInterval);
+                            responseThrottling = false;
+                            processResponse("server does not respond/is inaccessible");
+                        }
+
+                    }, 4000);
+
+                });
+            }
+
+        } else {
+            popUp(langOverrunServers, 3500, "info");
+        }
+
+    } else {
+        popUp(langInvalidAdress, 2500, "error");
+    }
+
+}
+
+function processResponse(response) {
+
+    console.log("server response is " + response.length + " characters long");
+
+    var processError = false;
+    var temporary = "";
+    for (var loop of infoToExtract) {
+        eval("globalThis." + loop + " = '';");
+        eval("globalThis." + loop + "Error = '';");
+    }
+
+    globalThis.editCitationInput = '';
+    globalThis.citationVariables = [];
+    for (var loop of allCitationVariables) {
+        if (citationPattern.includes("%" + loop)) {
+            citationVariables.push(loop);
+            editCitationInput = editCitationInput + '<div class="citationInputContainer"><div class="citationInputDescription" style="margin-left: 55px">' + loop + '</div><div class="centerFlex citationInputInputContainer"><button type="button" onclick="document.getElementById(' + "'citationInput-" + loop + "'" + ').value = ' + "''" + ';" class="clearCitationInput">                    <svg xmlns="http://www.w3.org/2000/svg" height="30px" viewBox="0 0 24 24" width="30px" fill=var(--buttonAccent)><path d="M0 0h24v24H0V0z" fill="none"/><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z"/></svg></button><input oninput="inputCitation(' + "'" + loop + "'" + ', false);" id="citationInput-' + loop + '" placeholder="' + loop + '" class="citationInput"></div></div>';
+        }
+    }
+
+    // console.log("edit citation: " + editCitationInput);
+    react("editCitationContainer", editCitationInput);
+
+    if (editingCitation) {
+        editCitation();
+    }
+    globalThis.editingCitation = false;
+
+    // if response contains error
+    if (response.length < 150000) {
+        if (/{\n(?:(?:.|\n)*?)Error": "(?:(?:.|\n)*)\n}/m.test(response) || /^java.*?Exception\:/m.test(response) || response == "server does not respond/is inaccessible") {
+            requestSuccessful = false;
+        } else {
+            requestSuccessful = true;
+        }
+    } else {
+        requestSuccessful = true;
+    }
+
+    if (!requestSuccessful) {
+
+        document.getElementById("editCitation").style.display = "none";
+        document.getElementById("missingInfo").style.display = "none";
+        popUp(langInvalidRequest, 2500, "error");
+
+        buildCitation(response);
+
+    } else {
+
+        if (optionEditButton) {
+            document.getElementById("editCitation").style.display = "inline-flex";
+        }
+
+        try {
+
+            var responseSplits = Math.trunc(response.length/100000 + 1);
+            console.log("reponse splitted into " + responseSplits + " piece(s)");
+            globalThis.originalResponse = response;
+
+            for (part = 0; part < responseSplits; part++) {
+                response = originalResponse.substring(part*100000, Math.min(part*100000+100000, originalResponse.length));
+                response = response.replace(/(?:\n|\r)/gm, "");
+
+                // extracting title
+                if (title == "") {
+                    try {
+                        temporary = response.match(/<title(?:[^>]*?)>([^>]*?)<(?:\/title>|title\/>)/m);
+                        if (temporary == null) {
+                            console.log("title couldn't match in part " + part+1);
+                        } else {
+                            title = temporary[1];
+                            if (title.length > 200) {
+                                console.log("title is too long: " + title.length);
+                                title = "";
+                            }
+                            console.log("title: " + title);
+                        }
+                    } catch (error) {
+                        titleError = error;
+                        console.warn("extracting title failed");
+                        console.error(error);
+                    }
+                }
+
+                // extracting icon
+                try {
+                    temporary = response.match(/<link[^>]*?rel=(?:"|')(?:icon|shortcut icon|apple-touch-icon)(?:"|')[^>]*?href=(?:"|')([^>]*?)(?:"|')/m);
+                    if (temporary == null) {
+                        temporary = response.match(/<link[^>]*?href=(?:"|')([^>]*?)(?:"|')[^>]*?rel=(?:"|')(?:icon|shortcut icon|apple-touch-icon)(?:"|')/m);
+                    }
+                    if (temporary == null) {
+                        temporary = response.match(/<meta[^>]*?content="([^>]+?)"[^>]*? itemprop="image"/m);
+                    }
+                    if (temporary == null) {
+                        console.log("icon couldn't match in part " + part+1);
+                    } else {
+                        icon = temporary[1];
+                        console.log("icon: " + icon);
+                    }
+                } catch (error) {
+                    iconError = error;
+                    console.warn("matching icon failed");
+                    console.error(error);
+                }
+
+                // extracting copyright
+                try {
+                    temporary = response.match(/(?:>((?:[^>|<]*?)(?:(?:&copy|©|®|Copyright)(?!(?:(?:.|\n)*?)(?:&copy|©|®|Copyright)))(?:(?:.|\n)*?)))<(?!(?:span|\/span|strong|\/strong|a|\/a|\!))/m);
+                    if (temporary == null) {
+                        temporary = response.match(/>(?!<)([^>]*?\s[1-2]\d{3}(?:.|\n){0,30}?2\d{3}\s?.*?)<(?!(?:span|\/span|a|\/a|\!))/m);
+                    }
+                    if (temporary == null) {
+                        console.log("copyright couldn't match in part " + part+1);
+                    } else {
+                        copyright = temporary[1].replaceAll(/(?:<(?:a|\!|span|strong)(?:.*?)>|<(?:a\/|\/a|\/span|\/strong)>)/gm, "");
+                        if (copyright.length > 250) {
+                            console.log("copyright is too long: " + copyright.length + " characters");
+                            copyright = "";
+                        }
+                        console.log("copyright: " + copyright);
+                    }
+                } catch (error) {
+                    copyrightError = error;
+                    console.warn("matching copyright failed");
+                    console.error(error);
+                }
+
+                // extracting wikiCitation
+                if (web.includes(".wikipedia.org/wiki/") && wikiCitation == "") {
+                    try {
+                        temporary = response.match(/<a[^>]*?href="(\/w\/index.php\?title[^>]+?wpFormIdentifier=titleform")/m);
+                        if (temporary == null) {
+                            console.log("wikiCitation couldn't match in part " + part+1);
+                        } else {
+                            wikiCitation = indexUrl + temporary[1].replace(/id=\d+&/m, "").replaceAll(";", "&").replaceAll("&amp", "");
+                            console.log("wikiCitation: " + wikiCitation);
+                        }
+                    } catch (error) {
+                        wikiCitationError = error;
+                        console.error("matching wikiCitation failed");
+                        console.error(error);
+                    }
+                }
+            }
+
+            // postprocessing
+            if (!icon.includes("//")) {
+                if (icon.substring(0, 1) != "/" && icon.substring(0, 1) != "\\") {
+                    icon = "/" + icon;
+                }
+                icon = indexUrl + icon;
+            }
+
+            if (touchscreen && wikiCitation != "") {
+                wikiCitation = wikiCitation.replace(/\.wikipedia\.org/m, ".m.wikipedia.org");
+            }
+
+            // editing action <a> tag
+            if (copyright.includes('<a') && copyright != "") {
+                try {
+                    while (/href=(?:"|')(?:\/(?:.*?))(?:"|')/m.test(copyright)) {
+                        try {
+                            copyright = copyright.replace(copyright.match(/href=(?:"|')(\/(?:.*?))(?:"|')/m)[1], protocol + indexWeb + copyright.match(/href=(?:"|')(\/(?:.*?))(?:"|')/m)[1]);
+                            console.log("copyright: " + copyright);
+                        } catch (error) {
+                            console.warn("replacing href failed");
+                            console.error(error);
+                        }
+                    }
+
+                    copyright = copyright.replaceAll("<a", '<a target="_blank"');
+                    // copyright = copyright.replaceAll("/fr/", "/cs/");
+                    console.log("copyright:" + copyright);
+                    
+                } catch (error) {
+                    
+                    console.warn("editing action <a> tag failed");
+                    console.error(error);
+
+                }
+            }
+                
+            if (web.includes(".wikipedia.org/wiki/")) {
+                copyright = langWikipediaContributors;
+            }
+
+            authorOnly = copyright.replace(/.(?:1|2)\d{3}(?:.{0,8}2\d{3})?/gm, "");
+            console.log("authorOnly: " + authorOnly);
+
+            response = originalResponse;
+
+        } catch (error) {
+
+            console.error("extracting information with regex failed");
+            console.error(error);
+            processResponse('{\n "Error": "' + error + '" \n}');
+            processError = true;
+            
+        }
+
+        if (!processError) {
+
+            // building missing information.
+            var missingInt = 0;
+            var missingContentHtml = "";
+            var addMissingContentHtml = "";
+            var replaceEmpty = new RegExp(/\s{2,}/, "gm");
+            for (var loop of infoToExtract) {
+                if (eval(loop) == '' && citationPattern.includes("%" + loop)) {
+                    missingInt = missingInt + 1;
+                    missingContentHtml = missingContentHtml + " " + loop + ",";
+                    addMissingContentHtml = addMissingContentHtml + '<div class="citationInputContainer"><div class="citationInputDescription">' + loop + '</div><input oninput="inputCitation(' + "'" + loop + "'" + ', true);" id="missingCitationInput-' + loop + '" placeholder="' + loop + '" class="citationInput"></div></div>';
+                    if (eval(loop + "Error") != '') {
+                        missingContentHtml = missingContentHtml + '<br><i>' + eval(loop + "Error") + '</i><br>';
+                    }
+                } else {
+                    eval(loop + " = " + loop + ".replace(replaceEmpty, ' ')");
+                }
+            }
+
+            // showing missing content
+            if (missingContentHtml != "") {
+                missingContentHtml = missingContentHtml.substring(0, missingContentHtml.length-1);
+                react("missingContent", missingContentHtml);
+                react("missingInputsContainer", addMissingContentHtml);
+                document.getElementById("missingInfo").style.display = "flex";
+            } else {
+                document.getElementById("missingInfo").style.display = "none";
+                document.getElementById("openManualInput").style.display = "flex";
+                document.getElementById("hr-missing2").style.display = "none";
+                document.getElementById("addMissingContent").style.display = "none";
+            }
+
+            // showing Did you know?
+            if ((missingInt > 1 || title.includes("404") || title.toLowerCase().includes("forbidden") || title.toLowerCase().includes("cloudflare")) && optionProxy != "Ntfy" && optionDidYouKnowHint) {
+                react("youKnowContent", langDidYouKnowProxyServer);
+                document.getElementById("didYouKnow").style.display = "flex";
+            } else if (wikiCitation != "" && optionDidYouKnowHint) {
+                react("youKnowContent", langDidYouKnowWikiCitation + '<a style="word-break: break-all;" href="' + wikiCitation + '" target="_blank">' + wikiCitation + '</a>');
+                document.getElementById("didYouKnow").style.display = "flex";
+            } else {
+                document.getElementById("didYouKnow").style.display = "none";
+            }
+
+            // getting date
+            var date = new Date;
+            globalThis.day = date.getDate();
+            globalThis.month = date.getMonth()*1+1;
+            globalThis.year = date.getFullYear();
+
+            requestSuccessful = true;
+            buildCitation();
+            saveHistory();
+
+        }
+
+    }
+
+    if (!processError) {
+
+        setLoadingBar(100);
+
+        if (NtfySwitchFetch) {
+            NtfySwitchFetch = false;
+            optionsSelector('Proxy', 'Codetabs', 'Button');
+        }
+
+        // closing manual input
+        document.getElementById("openManualInput").style.display = "inline-flex";
+        document.getElementById("hr-missing2").style.display = "none";
+        document.getElementById("addMissingContent").style.display = "none";
+
+        document.getElementById("resultOutput").style.display = "flex";
+        generating = false;
+        console.log("loadingAnimIntervalId after: " + loadingAnimInterval);
+        clearInterval(loadingAnimInterval);
+        loadingAnimInterval = null;
+        console.log("generating done");
+        setTimeout(function() {
+            updateOutputHeight();
+            setTimeout(function() {
+                document.getElementById("outputAnimator").style.opacity = 1;
+                document.getElementById("outputAnimator").style.pointerEvents = "all";
+            }, 100);
+        }, 20);
+
+    }
+
+}
+
+function updateOutputHeight() {
+    document.getElementById("outputAnimator").style.height = document.getElementById("output").getBoundingClientRect().height + "px";
+}
+
+function hideMoreOptions() {
+    document.getElementById("moreOptions").style.opacity = 0;
+    setTimeout(function() {
+        document.getElementById("moreOptions").style.display = "none";
+    }, 200);
+    moreOptionsShowing = false;
+}
+
+function inputCitation(content, missing) {
+    if (!missing) {
+        eval(content + " = '" + document.getElementById("citationInput-" + content).value + "'");
+    } else {
+        eval(content + " = '" + document.getElementById("missingCitationInput-" + content).value + "'");
+    }
+    buildCitation();
+}
+
+function buildCitation(requestError) {
+
+    if (requestError != undefined) {
+        // preparing for error output
+        document.getElementById("resultOutput").style.backgroundColor = "var(--errorBackAccent)";
+        document.getElementById("hr-output").className = "hr-error";
+        document.getElementById("resultOutput").style.color = "var(--errorAccent)";
+        globalThis.clearCitation = requestError;
+        console.log("clear citation: " + clearCitation);
+        react("citationOutput", "<i>" + requestError + "</i>");
+    } else {
+        // preparing for standard output
+        document.getElementById("resultOutput").style.backgroundColor = "var(--textBackAccent)";
+        document.getElementById("hr-output").className = "hr-text";
+        document.getElementById("resultOutput").style.color = "var(--textAccent)";
+        globalThis.citation = citationPattern;
+        for (var loop of citationVariables) {
+            if (eval(loop) != '') {
+                citation = citation.replaceAll("%" + loop, eval(loop));
+            }
+        }
+        console.log("citation: " + citation);
+        globalThis.clearCitation = citation.replaceAll(/(?:<(?:a|\!|span)(?:.*?)>|<(?:a\/|\/a|\/span)>)/gm, "");
+        clearCitation = clearCitation.replaceAll("&copy;", "©");
+        clearCitation = clearCitation.replace(/\s{2,}/gm, " ");
+        console.log("clear citation: " + clearCitation);
+        react("citationOutput", clearCitation);
+        for (var loop of citationVariables) {
+            if (document.getElementById("citationInput-" + loop).value != eval(loop)) {
+                document.getElementById("citationInput-" + loop).value = (eval(loop));
+            }
+        }
+    }
+
+}
+
+function configMenu(closedUponReset, clickOut) {
+
+    if (!configMenuOpened) {
+        if (moreOptionsShowing) {
+            hideMoreOptions();
+        }
+        document.getElementById("dimmer").style.display = "block";
+        document.getElementById("configRotateContainer").style.transform = "rotate(1turn)";
+        document.getElementById("menuSvg").style.opacity = 0;
+        setTimeout(function() {
+            document.getElementById("dimmer").style.opacity = 1;
+            setTimeout(function() {
+                document.getElementById("menuSvg").style.display = "none";
+                setTimeout(function() {
+                    document.getElementById("closeSvg").style.display = "block";
+                    setTimeout(function() {
+                        document.getElementById("closeSvg").style.opacity = 1;
+                        configMenuOpened = true;
+                    }, 10);
+                }, 10);
+            }, 150);
+        }, 10);
+    } else if (!clickOut || activeWindow == null) {
+        document.getElementById("body").style.overflowY = "auto";
+        document.getElementById("checkSvg").style.opacity = 0;
+        document.getElementById("closeSvg").style.opacity = 0;
+        document.getElementById("dimmer").style.opacity = 0;
+        document.getElementById("configRotateContainer").style.transform = "rotate(0turn)";
+        setTimeout(function() {
+            document.getElementById("closeSvg").style.display = "none";
+            document.getElementById("checkSvg").style.display = "none";
+            setTimeout(function() {
+                document.getElementById("menuSvg").style.display = "block";
+                setTimeout(function() {
+                    document.getElementById("menuSvg").style.opacity = 1;
+                    setTimeout(function() {
+                        document.getElementById("dimmer").style.display = "none";
+                        openOptions(null, false, closedUponReset);
+                        configMenuOpened = false;
+                    }, 40);
+                }, 20);
+            }, 20);
+        }, 155);
+    }
+
+}
+
+</script>
+
+
+</html>
